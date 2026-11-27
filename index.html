@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0a12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="lotusclan2026">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
 <title>lotusclan2026</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,6 +110,17 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
 .tip[hidden]{display:none}
 .tip small{display:block;color:var(--soft);margin-top:2px}
 @media(max-width:600px){.shrine{grid-template-columns:1fr}.shrine svg{max-width:140px}.pane{padding:18px 16px 22px}}
+/* iOS / touch polish */
+@media(max-width:600px) and (pointer:coarse),(max-height:480px) and (pointer:coarse){button{min-height:40px;padding:0 10px}.dock{gap:6px;padding:8px 8px;bottom:calc(14px + env(safe-area-inset-bottom,0px))}.dock.min>*:not(.dockT){display:none}.dock .dockT{display:inline-flex}}
+.dockT{display:none;min-height:34px!important;font-size:12px!important;opacity:.8;flex-basis:100%;justify-content:center}
+html{-webkit-text-size-adjust:100%;overscroll-behavior:none}
+body{position:fixed;inset:0;width:100%;height:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+canvas{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button,a,label{touch-action:manipulation}
+input,textarea,select{font-size:16px}
+.pane{max-height:min(88dvh,100%);-webkit-overflow-scrolling:touch}
+@media(pointer:coarse){button{min-height:44px;padding:0 12px}.fbtn{min-height:44px}}
+@media(max-height:480px) and (orientation:landscape){.plate{padding:8px 12px;max-width:min(300px,44vw)}.plate p,.plate q{display:none}.plate h1{font-size:20px}.dock{padding:6px 8px;gap:6px}.mirror{top:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px));right:max(14px,env(safe-area-inset-right,0px));width:min(24vw,26vh)}.mirror figcaption{display:none}}
 </style>
 </head>
 <body>
@@ -115,6 +134,7 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
 </div>
 
 <div class="dock" role="toolbar" aria-label="Village controls">
+<button class="dockT" type="button" aria-expanded="true">Hide controls ▾</button>
   <div class="grp"><b>Weather</b><div class="seg" data-k="wx">
     <button data-v="auto" aria-pressed="true">Auto</button><button data-v="sun" aria-pressed="false">Clear</button><button data-v="rain" aria-pressed="false">Rain</button><button data-v="storm" aria-pressed="false">Storm</button>
   </div></div>
@@ -324,8 +344,9 @@ cv.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;hoverTow
   else if(hoverTower>=0){YTH.hover=false;const g=GALLERIES[hoverTower%GALLERIES.length];showTip(towers[hoverTower].x,towerTop(towers[hoverTower]),`${esc(g.name)}<small>click to enter</small>`);cv.classList.add('pt');}
   else{YTH.hover=false;tip.hidden=true;cv.classList.remove('pt');}});
 cv.addEventListener('mouseleave',()=>{mouse.x=mouse.y=-1;tip.hidden=true;});
-cv.addEventListener('click',e=>{if(hoverFloat){return;}if(yukiAt(e.clientX,e.clientY)){location.href='/yuki';return;}const i=towerAt(e.clientX,e.clientY);if(i>=0)openGallery(i);});
-cv.addEventListener('touchend',e=>{const t=e.changedTouches[0];if(yukiAt(t.clientX,t.clientY)){location.href='/yuki';return;}const i=towerAt(t.clientX,t.clientY);if(i>=0){openGallery(i);}},{passive:true});
+{const dk=document.querySelector('.dock'),dt=dk.querySelector('.dockT');const setMin=m=>{dk.classList.toggle('min',m);dt.textContent=m?'Show controls ▴':'Hide controls ▾';dt.setAttribute('aria-expanded',String(!m));try{localStorage.setItem('dockMin',m?'1':'0')}catch(e){}};dt.addEventListener('click',()=>setMin(!dk.classList.contains('min')));let m0='0';try{m0=localStorage.getItem('dockMin')||'0'}catch(e){}if(m0==='1')setMin(true);}
+let lastTap=0;cv.addEventListener('click',e=>{if(hoverFloat||Date.now()-lastTap<700){return;}if(yukiAt(e.clientX,e.clientY)){location.href='/yuki';return;}const i=towerAt(e.clientX,e.clientY);if(i>=0)openGallery(i);});
+cv.addEventListener('touchend',e=>{lastTap=Date.now();const t=e.changedTouches[0];if(yukiAt(t.clientX,t.clientY)){location.href='/yuki';return;}const i=towerAt(t.clientX,t.clientY);if(i>=0){openGallery(i);}},{passive:true});
 function placeholderSVG(i,t){const hue=['#b48cff','#9a9ab0','#6a4a9a','#dcdcf0'][i%4];return `<svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="400" fill="#0b0a12"/><rect x="14" y="14" width="272" height="372" fill="none" stroke="#9a9ab0" stroke-width="2"/><rect x="28" y="28" width="244" height="150" fill="#141220" stroke="${hue}"/><rect x="28" y="192" width="116" height="194" fill="#141220" stroke="${hue}"/><rect x="156" y="192" width="116" height="194" fill="#141220" stroke="${hue}"/><circle cx="150" cy="103" r="34" fill="none" stroke="${hue}" stroke-width="3" opacity=".8"/><path d="M60 330 q30 -60 60 0 t60 0" fill="none" stroke="${hue}" stroke-width="3" opacity=".7"/><text x="150" y="110" text-anchor="middle" font-family="Georgia,serif" font-size="28" fill="${hue}">${esc(t)}</text><text x="150" y="372" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#9a9ab0">panel coming soon</text></svg>`;}
 const gal=document.getElementById('gal'),galG=document.getElementById('galG'),galB=document.getElementById('galB');
 function openGallery(i){const g=GALLERIES[i%GALLERIES.length];document.getElementById('galH').textContent=g.name;document.getElementById('galS').textContent=g.desc;galB.className='big';galB.innerHTML='';
@@ -519,7 +540,7 @@ function tellFortune(){fov.hidden=true;tal.classList.remove('burn','nap');fsave.
   fov.addEventListener('transitionend',()=>clearTimeout(seq),{once:true});}
 
 function build(){
-  const DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0);
+  W=innerWidth;H=innerHeight;const DPR=Math.min(devicePixelRatio||1,(matchMedia('(pointer:coarse)').matches&&W*H<700000)?1.5:2);cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0);
   k=cl(Math.min(W/1100,H/760),.55,1.4);seed=11;
   const gy=H*.78;towers=[];back=[];trees=[];stones=[];puddles=[];stars=[];clouds=[];mist=[];
   const n=Math.max(3,Math.round(W/(200*k)));
@@ -537,7 +558,7 @@ function build(){
   const gap=x=>x<W*.3||(x>W*.36&&x<W*.64);towers=towers.filter(o=>!gap(o.x));trees=trees.filter(t=>!gap(t.x));stones=stones.filter(l=>!(l.x>W*.36&&l.x<W*.64));
   buildBlackmount();buildExtras();placeYuki();
 }
-addEventListener('resize',build);build();
+let rsT=0;addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(build,120);});addEventListener('orientationchange',()=>{clearTimeout(rsT);rsT=setTimeout(build,350);});build();
 
 
 // Blackmount: black cliffs behind the village, waterfalls pouring off them, and the Great Lotus Keep on the tallest crag
@@ -677,9 +698,10 @@ function frame(now){
     clockEl.textContent=`${(hr%12)||12}:${String(mi).padStart(2,'0')} ${hr<12?'am':'pm'}`;
     wxEl.textContent=S.rain>.75?'Violet thunderstorm':S.rain>.45?'Steady rain':S.rain>.08?'Light rain':c>.4?'Clouds gathering':S.wet>.15?'Drying out':'Clear skies';
     litEl.textContent=lit;}
-  setRainVol(S.rain);requestAnimationFrame(frame);
+  setRainVol(S.rain);if(!document.hidden)requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(ac&&ac.state==='running')ac.suspend();}else{frame.l=0;requestAnimationFrame(frame);if(ac&&ac.state==='suspended'&&(soundOn||musOn))ac.resume();}});
 
 document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   seg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));S.mode[seg.dataset.k]=b.dataset.v;
