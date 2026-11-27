@@ -46,6 +46,23 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
 .file{display:flex;align-items:center;min-height:44px;padding:0 12px;border:1px dashed var(--line);font-weight:700;font-size:14px;color:var(--soft);cursor:pointer;white-space:nowrap}
 .file:hover{color:var(--ink)}
 .file input{position:absolute;width:1px;height:1px;opacity:0}
+#ytb{border:1px solid var(--line);min-height:44px}
+#ytb[aria-expanded=true]{background:var(--ember);color:#140a26}
+.yt{position:fixed;top:calc(24px + env(safe-area-inset-top,0px));right:max(24px,env(safe-area-inset-right,0px));width:min(340px,calc(100% - 48px));background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--ember);padding:10px 12px 12px;z-index:2}
+.yt[hidden]{display:none}
+.yt-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.yt-head b{font-size:14px;color:var(--soft)}
+.yt-head button{min-height:32px;padding:0 10px;border:1px solid rgba(190,190,215,.3)}
+.yt-vid{position:relative;aspect-ratio:16/9;background:#000;border:1px solid rgba(190,190,215,.25)}
+.yt-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-start{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;height:100%;background:#000 center/cover no-repeat;color:var(--ink);text-shadow:0 1px 4px #000}
+.yt-start span{background:rgba(8,6,14,.8);padding:6px 14px;border:1px solid var(--line)}
+.yt.min .yt-vid{height:0;aspect-ratio:auto;overflow:hidden;border:0}
+.yt-form{display:flex;gap:6px;margin-top:8px}
+.yt-form input{flex:1;min-height:38px;padding:0 10px;font:500 14px "Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid rgba(190,190,215,.3)}
+.yt-form button{border:1px solid var(--line)}
+.yt-msg{margin:6px 0 0;font-size:13px;color:var(--soft)}
+@media(max-width:600px){.yt{top:calc(168px + env(safe-area-inset-top,0px))}}
 @media(max-width:600px){.plate{padding:10px 14px}.plate p{font-size:14px}.dock{gap:8px;padding:8px}.grp b{display:none}button{padding:0 9px}}
 </style>
 </head>
@@ -68,8 +85,16 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
   </div></div>
   <button id="snd" aria-pressed="false">Rain sound</button>
   <button id="mus" aria-pressed="false">Temple drone</button>
+  <button id="ytb" aria-expanded="false" aria-controls="yt">YouTube music</button>
   <label class="file" for="trk">Your own track<input id="trk" type="file" accept="audio/*"></label>
 </div>
+
+<section class="yt" id="yt" hidden aria-label="YouTube music player">
+  <div class="yt-head"><b id="ytTitle">Battle Realms Lotus theme Dark Homily</b><span><button id="ytMin" aria-pressed="false">Shrink</button> <button id="ytX" aria-label="Close player">✕</button></span></div>
+  <div class="yt-vid" id="ytVid"></div>
+  <form class="yt-form" id="ytForm"><input id="ytUrl" type="url" placeholder="Paste a YouTube link" aria-label="YouTube link"><button type="submit">Play</button></form>
+  <p class="yt-msg" id="ytMsg">Any YouTube song, OST or playlist link works.</p>
+</section>
 <audio id="own" loop hidden></audio>
 
 <script>
@@ -244,9 +269,29 @@ function bell(){if(!ac||!musOn)return;const notes=[220,261.6,311.1,349.2,415.3,5
   o.connect(g).connect(musGain);o2.connect(g2).connect(musGain);o.start(t);o2.start(t);o.stop(t+5.2);o2.stop(t+1.8);clearTimeout(bellTimer);bellTimer=setTimeout(bell,4000+Math.random()*9000);}
 musBtn.addEventListener('click',()=>{musOn=!musOn;if(!musGain)startMusic();if(ac&&ac.state==='suspended')ac.resume();if(musGain)musGain.gain.setTargetAtTime(musOn?.6:0,ac.currentTime,1.2);if(musOn)bell();musBtn.setAttribute('aria-pressed',musOn);});
 
-// the person's own music file, played locally in their browser only
+// YouTube music: the player loads only when someone presses play, so visitors don't contact YouTube until then
 const own=document.getElementById('own');
-document.getElementById('trk').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;own.src=URL.createObjectURL(f);own.volume=.7;own.play().catch(()=>{});if(musOn)musBtn.click();e.target.parentNode.childNodes[0].textContent=f.name.replace(/\.[^.]+$/,'').slice(0,24);});
+const yt=document.getElementById('yt'),ytb=document.getElementById('ytb'),ytVid=document.getElementById('ytVid'),ytMsg=document.getElementById('ytMsg'),ytTitle=document.getElementById('ytTitle'),ytMin=document.getElementById('ytMin');
+const DEFAULT_YT={v:'zuqVZJ1m1N4',title:'Battle Realms Lotus theme Dark Homily'};
+let ytCur=DEFAULT_YT;
+function parseYT(s){try{const u=new URL(s.trim());const h=u.hostname.replace(/^(www\.|m\.|music\.)/,'');let v=null;const list=u.searchParams.get('list');
+  if(h==='youtu.be')v=u.pathname.slice(1).split('/')[0];
+  else if(h==='youtube.com'||h==='youtube-nocookie.com'){v=u.searchParams.get('v');const m=u.pathname.match(/^\/(embed|shorts|live)\/([\w-]{11})/);if(m)v=m[2];}
+  else return null;
+  if(v&&!/^[\w-]{11}$/.test(v))v=null;if(list&&!/^[\w-]+$/.test(list))return null;return v||list?{v,list}:null;}catch(e){return null}}
+function ytPoster(){ytVid.innerHTML='';if(ytCur.v){const b=document.createElement('button');b.className='yt-start';b.style.backgroundImage=`url(https://i.ytimg.com/vi/${ytCur.v}/hqdefault.jpg)`;b.innerHTML='<span>▶ Play</span>';b.setAttribute('aria-label','Play '+(ytCur.title||'YouTube music'));b.addEventListener('click',ytPlay);ytVid.appendChild(b);}}
+function ytPlay(){const p=new URLSearchParams({autoplay:1,loop:1,rel:0,playsinline:1});if(ytCur.list)p.set('list',ytCur.list);else if(ytCur.v)p.set('playlist',ytCur.v);
+  const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${ytCur.v||'videoseries'}?${p}`;f.title=ytCur.title||'YouTube music';f.allow='autoplay; encrypted-media; picture-in-picture';f.referrerPolicy='strict-origin-when-cross-origin';f.allowFullscreen=true;
+  ytVid.innerHTML='';ytVid.appendChild(f);if(musOn)musBtn.click();if(!own.paused)own.pause();}
+ytb.addEventListener('click',()=>{const open=yt.hidden;yt.hidden=!open;ytb.setAttribute('aria-expanded',open);if(open&&!ytVid.firstChild)ytPoster();});
+document.getElementById('ytX').addEventListener('click',()=>{yt.hidden=true;ytb.setAttribute('aria-expanded',false);ytVid.innerHTML='';});
+ytMin.addEventListener('click',()=>{const m=yt.classList.toggle('min');ytMin.setAttribute('aria-pressed',m);ytMin.textContent=m?'Show video':'Shrink';});
+document.getElementById('ytForm').addEventListener('submit',e=>{e.preventDefault();const r=parseYT(document.getElementById('ytUrl').value);
+  if(!r){ytMsg.textContent='That doesn’t look like a YouTube link. Try copying it from the address bar.';return;}
+  ytCur={...r,title:'YouTube music'};ytTitle.textContent=r.list&&!r.v?'YouTube playlist':'Now playing';ytMsg.textContent='If it won’t play, the video’s owner has turned off embedding.';ytPlay();});
+
+// the person's own music file, played locally in their browser only
+document.getElementById('trk').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;if(ytVid.querySelector('iframe'))ytPoster();own.src=URL.createObjectURL(f);own.volume=.7;own.play().catch(()=>{});if(musOn)musBtn.click();e.target.parentNode.childNodes[0].textContent=f.name.replace(/\.[^.]+$/,'').slice(0,24);});
 }
 </script>
 
