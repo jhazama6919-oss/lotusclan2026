@@ -39,9 +39,13 @@ button[aria-pressed="true"]{background:var(--jade);color:#0b0a12;border-color:va
 .yt[hidden]{display:none}.yt b{display:block;font-size:14px;color:var(--soft);margin-bottom:8px}
 .yt-vid{position:relative;aspect-ratio:16/9;background:#000;border:1px solid rgba(190,190,215,.25)}.yt-vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt p{margin:6px 0 0;font-size:12px;color:var(--soft)}
-.mirror{position:fixed;right:max(6vw,env(safe-area-inset-right,0px));top:30vh;width:min(24vw,240px);margin:0;pointer-events:none;animation:drift 7s ease-in-out infinite}.mirror img{display:block;width:100%;height:auto;aspect-ratio:270/298;object-fit:cover;border-radius:50% 50% 46% 46%/55% 55% 45% 45%;border:2px solid rgba(220,210,245,.55);box-shadow:0 0 0 5px rgba(8,6,14,.85),0 0 0 6px rgba(180,140,255,.55),0 0 40px 12px rgba(160,110,255,.35),0 0 90px 30px rgba(120,80,220,.18);filter:saturate(1.05)}.mirror figcaption{margin:10px 0 0;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);text-shadow:0 0 10px rgba(180,140,255,.6)}@keyframes drift{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-12px) rotate(1deg)}}@media(prefers-reduced-motion:reduce){.mirror{animation:none}}@media(max-width:700px){.mirror{top:28vh;right:max(14px,env(safe-area-inset-right,0px));width:30vw;max-width:140px}.mirror figcaption{display:none}}
+.mirror{position:fixed;right:max(2vw,env(safe-area-inset-right,0px));bottom:calc(96px + env(safe-area-inset-bottom,0px));height:min(54vh,600px);margin:0;pointer-events:none;animation:drift 7s ease-in-out infinite;text-align:center;z-index:1}.mirror img{display:block;height:calc(100% - 26px);width:auto;margin:0 auto;filter:drop-shadow(0 0 22px rgba(150,100,255,.55)) drop-shadow(0 0 60px rgba(120,80,220,.25));transition:opacity .45s}.mirror img.sw{opacity:0}.mirror figcaption{margin:10px 0 0;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);text-shadow:0 0 10px rgba(180,140,255,.6)}@keyframes drift{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-12px) rotate(1deg)}}@media(prefers-reduced-motion:reduce){.mirror{animation:none}}@media(max-width:700px){.mirror{height:min(34vh,300px);right:0;bottom:calc(176px + env(safe-area-inset-bottom,0px))}.mirror figcaption{display:none}.mirror img{height:100%}}
 @media(max-width:600px){.yt{top:auto;bottom:calc(96px + env(safe-area-inset-bottom,0px))}.plate{max-width:calc(100% - 48px)}.plate q{display:none}}
 .fpane{text-align:center;max-width:560px}.scroll-wrap{display:flex;justify-content:center;perspective:800px;margin:6px 0 10px}.tal{position:relative;width:min(300px,100%);background:linear-gradient(180deg,#efe9f4,#d8d8e8);color:#120b1e;border:2px solid #9a9ab0;box-shadow:0 0 0 4px #0b0a12,0 0 0 5px #6a4a9a;padding:22px 20px 26px;transform-origin:top;animation:unroll 1.1s cubic-bezier(.2,.8,.2,1) both}.tal::before,.tal::after{content:"";position:absolute;left:10px;right:10px;height:6px;background:#6a4a9a;border-radius:3px}.tal::before{top:6px}.tal::after{bottom:6px}.tal-ink b{display:block;font:800 13px "Zen Kaku Gothic New",sans-serif;letter-spacing:.12em;color:#6a4a9a;margin-bottom:10px}.tal-ink p{font:600 clamp(17px,2.6vw,21px)/1.45 "Shippori Mincho B1",Georgia,serif;margin:0 0 14px;color:#120b1e}.tal-ink i{font-size:13px;color:#4a3f66}.tal.burn{animation:burn 2.2s ease-in forwards}.tal.nap{background:linear-gradient(180deg,#1f1d28,#141220);color:var(--soft);border-color:#4a3f66}.tal.nap .tal-ink p{color:var(--ink)}.tal.nap .tal-ink b{color:var(--ember)}@keyframes unroll{from{transform:rotateX(-90deg) scaleY(.2);opacity:0}to{transform:none;opacity:1}}@keyframes burn{0%{filter:none;clip-path:inset(0 0 0 0)}40%{filter:sepia(1) hue-rotate(230deg) saturate(2)}100%{filter:sepia(1) hue-rotate(230deg) saturate(3) brightness(.3);clip-path:inset(0 0 100% 0);opacity:0}}.fnote{font-size:13px;color:var(--soft);min-height:1.2em;margin:0 0 10px}.fbtns{display:flex;gap:8px;justify-content:center}.fbtn{display:inline-block;border:1px solid var(--ember);color:var(--ember);padding:10px 16px;font-weight:700;text-decoration:none}button.fbtn{background:none;font:inherit;font-weight:700;cursor:pointer;min-height:40px}@media(prefers-reduced-motion:reduce){.tal,.tal.burn{animation:none}}
+/* lotus gauntlet cursor */
+html,body,canvas,#scene{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0' stop-color='%23b48cff' stop-opacity='.85'/%3E%3Cstop offset='.55' stop-color='%237a4ae0' stop-opacity='.35'/%3E%3Cstop offset='1' stop-color='%237a4ae0' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233a3744'/%3E%3Cstop offset='.5' stop-color='%2315131c'/%3E%3Cstop offset='1' stop-color='%2307060a'/%3E%3C/linearGradient%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23eeeaf6'/%3E%3Cstop offset='1' stop-color='%238d8aa0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='15' cy='16' r='15' fill='url(%23g)'/%3E%3Cpath d='M18 19 L29 30 L31 25 L24 16 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M24.5 23.5 L28 27' stroke='%23b48cff' stroke-width='1.1' stroke-linecap='round'/%3E%3Cpath d='M9 11 C7 13 7 18 10 21 C13 24 19 23 21 20 C23 17 20 11 16 9 C13 7.5 10.5 9 9 11 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='1'/%3E%3Cpath d='M8.5 11.5 C5.5 8.5 4.5 5 6 3.5 C8 4 10.5 7 11.5 10 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M12 9.5 C10.5 6 11 2.5 13 2 C14.5 3.5 15.5 7 15 10 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M15.5 10.5 C15.5 7 17.5 4 19.5 4 C20.5 6 19.5 9.5 18 11.5 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M18.5 12.5 C20 10 23 8.5 25 9.5 C25 11.5 23 14 20.5 15 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M9.5 20 C6 20 4 17 4.5 14.5 C7 14 9.5 15.5 11 18 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Ccircle cx='14.5' cy='16' r='3.1' fill='%23120b1e' stroke='%23c9c9de' stroke-width='.8'/%3E%3Ccircle cx='14.5' cy='16' r='1.9' fill='%23b48cff'/%3E%3Ccircle cx='13.8' cy='15.3' r='.7' fill='%23fff'/%3E%3Cpath d='M4 7 L6.5 8.5 L5 10.5 L8 12' fill='none' stroke='%23efe6ff' stroke-width='.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 5 L21 8 L23.5 8.5 L22 11.5' fill='none' stroke='%23d9c4ff' stroke-width='.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 5 5,auto}
+button,a,label,.file,.panel,.tcard,.x,#scene.pt,canvas.pt,.say a{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0' stop-color='%23b48cff' stop-opacity='1'/%3E%3Cstop offset='.55' stop-color='%237a4ae0' stop-opacity='.6'/%3E%3Cstop offset='1' stop-color='%237a4ae0' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233a3744'/%3E%3Cstop offset='.5' stop-color='%2315131c'/%3E%3Cstop offset='1' stop-color='%2307060a'/%3E%3C/linearGradient%3E%3ClinearGradient id='s' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23eeeaf6'/%3E%3Cstop offset='1' stop-color='%238d8aa0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='15' cy='16' r='16' fill='url(%23g)'/%3E%3Cpath d='M18 19 L29 30 L31 25 L24 16 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M24.5 23.5 L28 27' stroke='%23b48cff' stroke-width='1.1' stroke-linecap='round'/%3E%3Cpath d='M9 11 C7 13 7 18 10 21 C13 24 19 23 21 20 C23 17 20 11 16 9 C13 7.5 10.5 9 9 11 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='1'/%3E%3Cpath d='M8.5 11.5 C5.5 8.5 4.5 5 6 3.5 C8 4 10.5 7 11.5 10 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M12 9.5 C10.5 6 11 2.5 13 2 C14.5 3.5 15.5 7 15 10 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M15.5 10.5 C15.5 7 17.5 4 19.5 4 C20.5 6 19.5 9.5 18 11.5 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M18.5 12.5 C20 10 23 8.5 25 9.5 C25 11.5 23 14 20.5 15 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Cpath d='M9.5 20 C6 20 4 17 4.5 14.5 C7 14 9.5 15.5 11 18 Z' fill='url(%23m)' stroke='url(%23s)' stroke-width='.9'/%3E%3Ccircle cx='14.5' cy='16' r='3.1' fill='%23120b1e' stroke='%23c9c9de' stroke-width='.8'/%3E%3Ccircle cx='14.5' cy='16' r='1.9' fill='%23b48cff'/%3E%3Ccircle cx='13.8' cy='15.3' r='.7' fill='%23fff'/%3E%3Cpath d='M4 7 L6.5 8.5 L5 10.5 L8 12' fill='none' stroke='%23efe6ff' stroke-width='.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 5 L21 8 L23.5 8.5 L22 11.5' fill='none' stroke='%23d9c4ff' stroke-width='.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 5 5,pointer}
+#ritual label{display:block;font:700 13px "Zen Kaku Gothic New",sans-serif;letter-spacing:.12em;color:var(--ember);margin:6px 0 8px;text-transform:uppercase}#ritual input{width:100%;max-width:360px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink);padding:10px 12px;font:500 16px "Shippori Mincho B1",Georgia,serif;margin:0 auto 12px;display:block;text-align:center}#ritual input:focus{outline:none;border-color:var(--ember);box-shadow:0 0 18px rgba(180,140,255,.35)}.rhint{color:var(--soft);font-size:14px;margin:4px 0 10px}.tdeck{display:flex;gap:14px;justify-content:center;perspective:700px;margin:0 0 14px}.tcard{width:72px;height:118px;border:1px solid #9a9ab0;background:linear-gradient(180deg,#1f1d28,#0b0a12);box-shadow:0 0 0 3px #0b0a12,0 0 0 4px #6a4a9a;position:relative;padding:0;min-height:0;transition:transform .5s,opacity .5s,box-shadow .3s}.tcard::before{content:"";position:absolute;inset:8px;border:1px solid rgba(190,190,215,.35)}.tcard::after{content:"\2740";position:absolute;inset:0;display:grid;place-items:center;color:#b48cff;font-size:30px}.tcard:hover:not(:disabled){transform:translateY(-6px);box-shadow:0 0 0 3px #0b0a12,0 0 0 4px #b48cff,0 0 24px rgba(180,140,255,.5)}.tcard.flip{transform:rotateY(180deg) scale(1.1);box-shadow:0 0 0 3px #0b0a12,0 0 0 4px #b48cff,0 0 40px rgba(180,140,255,.8)}.tcard.dim{opacity:.25}.shuf .tcard:nth-child(1){animation:sh1 1.4s ease-in-out}.shuf .tcard:nth-child(2){animation:sh2 1.4s ease-in-out}.shuf .tcard:nth-child(3){animation:sh3 1.4s ease-in-out}@keyframes sh1{0%{transform:none}25%{transform:translateX(86px) translateY(-10px)}50%{transform:translateX(172px)}75%{transform:translateX(86px) translateY(10px)}100%{transform:none}}@keyframes sh2{0%{transform:none}25%{transform:translateX(-86px) translateY(10px)}50%{transform:none}75%{transform:translateX(86px) translateY(-10px)}100%{transform:none}}@keyframes sh3{0%{transform:none}25%{transform:translateX(-86px) translateY(-10px)}50%{transform:translateX(-172px)}75%{transform:translateX(-86px) translateY(10px)}100%{transform:none}}.fpane.zy{animation:zy 2.4s ease-out}@keyframes zy{0%,18%,40%{box-shadow:0 0 0 1px #efe6ff,0 0 80px 20px rgba(200,170,255,.9)}10%,30%,100%{box-shadow:none}}.say{position:fixed;z-index:4;transform:translate(-50%,-100%);max-width:min(280px,70vw);background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--ember);padding:10px 12px;font:italic 14px/1.45 "Shippori Mincho B1",Georgia,serif;color:var(--ink);pointer-events:none;opacity:1;transition:opacity .5s}.say::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateX(-50%) rotate(45deg)}.say a{display:block;margin-top:6px;font:700 12px "Zen Kaku Gothic New",sans-serif;color:var(--ember);text-decoration:none;pointer-events:auto;letter-spacing:.06em}.say.out{opacity:0}.say[hidden]{display:none}@media(prefers-reduced-motion:reduce){.shuf .tcard{animation:none}.fpane.zy{animation:none}}.scroll-wrap[hidden],.fbtn[hidden],.rs[hidden],#ritual[hidden]{display:none!important}
 /* iOS / touch polish */
 html{-webkit-text-size-adjust:100%;overscroll-behavior:none}
 body{position:fixed;inset:0;width:100%;height:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
@@ -50,7 +54,7 @@ button,a,label{touch-action:manipulation}
 input,textarea,select{font-size:16px}
 .pane{max-height:min(88dvh,100%);-webkit-overflow-scrolling:touch}
 @media(pointer:coarse){button{min-height:44px;padding:0 12px}.fbtn{min-height:44px}}
-@media(max-height:480px) and (orientation:landscape){.plate{padding:8px 12px;max-width:min(300px,44vw)}.plate p,.plate q{display:none}.plate h1{font-size:20px}.dock{padding:6px 8px;gap:6px}.mirror{top:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px));right:max(14px,env(safe-area-inset-right,0px));width:min(24vw,26vh)}.mirror figcaption{display:none}}
+@media(max-height:480px) and (orientation:landscape){.plate{padding:8px 12px;max-width:min(300px,44vw)}.plate p,.plate q{display:none}.plate h1{font-size:20px}.dock{padding:6px 8px;gap:6px}.mirror{height:min(46vh,220px);right:max(8px,env(safe-area-inset-right,0px));bottom:calc(80px + env(safe-area-inset-bottom,0px))}.mirror figcaption{display:none}.mirror img{height:100%}}
 </style>
 </head>
 <body>
@@ -62,7 +66,7 @@ input,textarea,select{font-size:16px}
   <q>A future is just a story that has not yet chosen its ending. Shall we read yours? Hehehe…</q>
   <a href="/">← Back to the village</a>
 </div>
-<figure class="mirror"><img src="yuki-portrait.webp" width="270" height="298" alt="Portrait of Yuki Tao Hu: silver hair under a black lotus cap, pale violet eyes, a fanged grin, a burning talisman in her hand" decoding="async"><figcaption>As Kael drew her</figcaption></figure>
+<figure class="mirror"><img id="moodImg" src="yuki-mood-smirk.webp" alt="Yuki Tao Hu: silver hair under a black lotus cap, pale violet eyes, a sly grin" decoding="async"><figcaption id="moodCap">Greetings, traveller… heeh.</figcaption></figure>
 <div class="dock">
   <button class="prime" id="draw">Draw a talisman</button>
   <button id="theme" aria-pressed="false">Her theme</button>
@@ -161,7 +165,13 @@ const FORTUNES={
   'The storm does not rage for destruction. It rages to cleanse, to reveal, and to renew. Stand in it until you know which of the three it is doing to you.',
  ],
 };
-const YTH={x:0,y:0,nap:Math.random()<1/12,hover:false,bob:0};const DAYKEY='yth-fortune-day';
+const PAGE='yuki';function stormy(){return S.solemn>0}
+const MOODCAP={smirk:'Greetings, traveller… heeh.',sleepy:'…zzz… five more centuries…',solemn:'The storm leans in. Listen.',giggle:'Hehehe… you again?'};
+const moodImg=document.getElementById('moodImg'),moodCap=document.getElementById('moodCap');let curMood='';
+function onMood(m){if(m===curMood)return;curMood=m;moodCap.textContent=MOODCAP[m]||'';const tryLoad=srcs=>{if(!srcs.length)return;const im=new Image();im.onload=()=>{moodImg.classList.add('sw');setTimeout(()=>{moodImg.src=im.src;moodImg.classList.remove('sw')},300)};im.onerror=()=>tryLoad(srcs.slice(1));im.src=srcs[0];};tryLoad(['yuki-mood-'+m+'.webp','yuki-mood-'+m+'.png','yuki-portrait.webp']);}
+moodImg.addEventListener('error',()=>{if(!moodImg.dataset.fb){moodImg.dataset.fb=1;moodImg.src='yuki-portrait.webp';}},{once:true});
+function zymethStrike(){S.solemn=1;S.rain=1;let n=0;const z=()=>{S.flash=1;let x=W*(.1+Math.random()*.8),y=0;S.bolt=[[x,y]];while(y<H*.5){y+=20+Math.random()*30;x+=(Math.random()-.5)*50;S.bolt.push([x,y]);}thunder();if(++n<3)setTimeout(z,350+Math.random()*400);};z();clearTimeout(zymethStrike.t);zymethStrike.t=setTimeout(()=>{S.solemn=0;S.rain=.5},40000);}
+const YTH={x:0,y:0,nap:Math.random()<1/12,hover:false,bob:0,mood:'smirk',moodUntil:0};const DAYKEY='yth-fortune-day';
 function drawYuki(nt,c,T){const {x,y}=YTH,s=k*1.05,bob=(RM?0:Math.sin(T*1.1)*3*s)-7*s;YTH.bob=bob;const sway=RM?0:Math.sin(T*1.5)*S.wind;
   cx.save();cx.translate(x,y);
   // the lotus circle she floats over
@@ -190,7 +200,7 @@ function drawYuki(nt,c,T){const {x,y}=YTH,s=k*1.05,bob=(RM?0:Math.sin(T*1.1)*3*s
     cx.fillStyle=`rgba(220,220,240,${.5+.5*Math.sin(T*2)})`;cx.font=`${9*s}px sans-serif`;cx.fillText('z',11*s,-86*s-((T*8)%12)*s);cx.fillText('z',15*s,-94*s-((T*8+6)%12)*s);}
   else{for(const [ex,tilt] of [[-3.1,.28],[3.1,-.28]]){cx.save();cx.translate(ex*s,-69.8*s);cx.rotate(tilt);cx.fillStyle='#f7f3fb';cx.beginPath();cx.ellipse(0,0,2.1*s,1.25*s,0,0,7);cx.fill();cx.fillStyle='#b99af0';cx.beginPath();cx.arc(.2*s,.05*s,1.05*s,0,7);cx.fill();cx.fillStyle='#6a4ab8';cx.beginPath();cx.arc(.25*s,.1*s,.55*s,0,7);cx.fill();cx.fillStyle='#fff';cx.beginPath();cx.arc(-.2*s,-.35*s,.3*s,0,7);cx.fill();cx.strokeStyle='#3a2a52';cx.lineWidth=.55*s;cx.beginPath();cx.moveTo(-2.1*s,-.2*s);cx.quadraticCurveTo(0,-1.9*s,2.4*s,-.9*s);cx.stroke();cx.restore();}
     cx.fillStyle='#3a2a52';cx.beginPath();cx.arc(4.6*s,-67.4*s,.42*s,0,7);cx.fill();
-    cx.fillStyle='#4a2a5a';cx.beginPath();cx.moveTo(-1.8*s,-65.6*s);cx.quadraticCurveTo(.9*s,-63.2*s,3.2*s,-66.2*s);cx.quadraticCurveTo(.9*s,-64.9*s,-1.8*s,-65.6*s);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.beginPath();cx.moveTo(1.9*s,-66*s);cx.lineTo(2.6*s,-66.1*s);cx.lineTo(2.3*s,-64.9*s);cx.closePath();cx.fill();}
+    if(YTH.mood==='solemn'){cx.strokeStyle='#4a2a5a';cx.lineWidth=.6*s;cx.beginPath();cx.moveTo(-1.6*s,-65.4*s);cx.lineTo(2.4*s,-65.6*s);cx.stroke();}else if(YTH.mood==='giggle'){cx.fillStyle='#4a2a5a';cx.beginPath();cx.moveTo(-2.6*s,-66.2*s);cx.quadraticCurveTo(.6*s,-61.6*s,3.8*s,-66.6*s);cx.quadraticCurveTo(.6*s,-64.6*s,-2.6*s,-66.2*s);cx.closePath();cx.fill();cx.fillStyle='#fff';for(const fx of[-1.4,2.2]){cx.beginPath();cx.moveTo(fx*s,-66*s);cx.lineTo((fx+.7)*s,-66.1*s);cx.lineTo((fx+.35)*s,-64.7*s);cx.closePath();cx.fill();}}else{cx.fillStyle='#4a2a5a';cx.beginPath();cx.moveTo(-1.8*s,-65.6*s);cx.quadraticCurveTo(.9*s,-63.2*s,3.2*s,-66.2*s);cx.quadraticCurveTo(.9*s,-64.9*s,-1.8*s,-65.6*s);cx.closePath();cx.fill();cx.fillStyle='#fff';cx.beginPath();cx.moveTo(1.9*s,-66*s);cx.lineTo(2.6*s,-66.1*s);cx.lineTo(2.3*s,-64.9*s);cx.closePath();cx.fill();}}
   // a talisman burning with violet fire in her raised hand
   const tx=23*s,ty=-72*s;cx.save();cx.translate(tx,ty);cx.rotate(-.25);cx.fillStyle='#efe6ee';cx.fillRect(-2.2*s,-7*s,4.4*s,11*s);cx.fillStyle='#6a4a9a';cx.fillRect(-.5*s,-5*s,1*s,6*s);cx.restore();
   if(!YTH.nap){for(let i=0;i<3;i++){const fl=Math.sin(T*9+i*2.1)*.5+.5;const fg=cx.createRadialGradient(tx,ty-8*s-fl*4*s,0,tx,ty-8*s,9*s);fg.addColorStop(0,`rgba(230,200,255,${.55-i*.12})`);fg.addColorStop(.5,`rgba(170,110,255,${.35-i*.1})`);fg.addColorStop(1,'rgba(150,90,255,0)');cx.fillStyle=fg;cx.beginPath();cx.ellipse(tx+Math.sin(T*7+i)*1.5*s,ty-8*s-fl*3*s,4*s+i*s,8*s+fl*4*s,0,0,7);cx.fill();}}
@@ -204,9 +214,57 @@ function drawYuki(nt,c,T){const {x,y}=YTH,s=k*1.05,bob=(RM?0:Math.sin(T*1.1)*3*s
   cx.fillStyle='#1f1d28';cx.fillRect(-36*s,-14*s,16*s,11*s);cx.strokeStyle='#9a9ab0';cx.lineWidth=.8;cx.strokeRect(-36*s,-14*s,16*s,11*s);cx.fillRect(-29*s,-3*s,2*s,4*s);
   cx.fillStyle='#b48cff';cx.font=`700 ${5*s}px sans-serif`;cx.textAlign='center';cx.fillText('FATE',-28*s,-6.5*s);cx.textAlign='start';
   cx.restore();}
+// @@talk  Yuki talks: J's lines first, then more in her voice
+const LINES={
+ j:["Mae govannen mell- wait no. There are no elves here....or not as you'd think them to be...heeh",
+  "Selling coffins, two for the price of one...heh...",
+  "Hark a traveller...wherefore thou come from? Teyvat? Lordaeron...? Or.....",
+  "Bow before the Lotus...or not. Heeh",
+  "What fortune dost thou seeketh weary trailblazer? Have you not found Akivili yet?"],
+ more:["Twelve thousand years and still nobody brings me tea. Heeh. Sit. Or hover. I don't judge the living.",
+  "The lantern says you look lost. The lantern says that about everyone. The lantern is usually right.",
+  "Czenzhurua... that is Lúrén for 'absolute silence'. Try it sometime. Very slimming for the soul.",
+  "Careful where you step. Half these flowers are older than your gods. The other half are just rude.",
+  "Lord Zymeth sends his regards. He does not know he sent them. That is how regards work on Blackmount.",
+  "You smell like a different century. Don't worry. It washes off. Mostly.",
+  "I read fates, not minds. Your mind I can see from here. It is very loud. Heeh.",
+  "The lotus does not merely bloom, traveller. It cuts. Mind your fingers.",
+  "Zhaemura is far and the ferry is late by about nine hundred years. Sit with me a while.",
+  "Looking for the Seventh Branch? So are they. Heeh."],
+ morning:["Morning already? The storm barely slept. Neither did I. I never do.","Dawn on Blackmount. The blossoms open, the coffins close. Business as usual."],
+ evening:["Dusk. My favourite hour. Everything looks honest in violet.","The lanterns are waking up. Light one. Go on. They get lonely."],
+ night:["The storm is louder after midnight. So am I. Ask me something, or don't. The thunder answers either way.","Still awake? Good. The dead hour is when the talismans tell the truth. Heeh...","Past midnight the fountain whispers names. Don't listen for yours."],
+ sleepy:["...zzz... five more centuries...","...mm... not now... the ferry... zzz...","...you again... in my dream... how rude... zzz"],
+ solemn:["Hush. Zymeth's thunder is speaking, and it does not repeat itself.","The storm does not rage to destroy, traveller. It rages to reveal. Stand still.","Czenzhurua. Absolute silence. Something very old is passing overhead."],
+ tap3:["Tap, tap, tap. I am a fortune teller, not a doorbell.","Yes? Yes? YES? Heeh. Patience is also a fortune.","Poke me once more and I read your fate backwards."],
+ tap5:["CZENZHURUA. Absolute silence. ...heeh, I am joking. Mostly. Stop poking.","Twelve thousand years and you are the first to treat me like a drum. Congratulations."],
+ back2:["Back again so soon? The lantern missed you. I did not. ...Fine. A little.","Ah. You returned. They always do. The coffins are still two for one."],
+ back5:"Ah, my favourite haunting. Visit number {n}. Keep going. At one hundred I tell you my real age.",
+ gone:["You were gone a long time. The blossoms fell twice. I kept your spot warm with a small curse.","Long time, traveller. The village counted the days. I counted the thunder. We both lost count."]};
+const VIS=(()=>{let n=0,last=0;try{n=+(localStorage.getItem('yth-visits')||0);last=+(localStorage.getItem('yth-last')||0);n++;localStorage.setItem('yth-visits',n);localStorage.setItem('yth-last',Date.now());}catch(e){}return{n,last};})();
+const say=document.createElement('div');say.className='say';say.hidden=true;say.innerHTML='<span></span>'+(PAGE==='village'?'<a href="/yuki">enter her corner →</a>':'');document.body.appendChild(say);
+const sayT=say.firstChild;let sayTimer=0,sayHide=0,lastSaid='';
+function speak(text,hold){clearInterval(sayTimer);clearTimeout(sayHide);say.hidden=false;say.classList.remove('out');lastSaid=text;let i=0;sayT.textContent='';
+  if(RM)sayT.textContent=text;else sayTimer=setInterval(()=>{i++;sayT.textContent=text.slice(0,i)+(i<text.length?'▍':'');if(i>=text.length)clearInterval(sayTimer);},26);
+  sayHide=setTimeout(()=>{say.classList.add('out');setTimeout(()=>{say.hidden=true},500)},(hold||6500)+(RM?0:text.length*26));placeSay();}
+function placeSay(){if(say.hidden)return;const dk=document.querySelector('.dock'),lim=dk?dk.getBoundingClientRect().top-14:H;say.style.left=Math.max(150,Math.min(W-150,YTH.x))+'px';say.style.top=Math.min(lim,YTH.y-124*k+(YTH.bob||0))+'px';}
+function realHour(){return new Date().getHours()}
+function pool(){const h=realHour(),m=YTH.mood;if(m==='sleepy')return LINES.sleepy;if(m==='solemn')return LINES.solemn;const a=LINES.j.concat(LINES.more);if(h>=22||h<4)a.push(...LINES.night,...LINES.night);else if(h<11)a.push(...LINES.morning);else if(h>=17)a.push(...LINES.evening);return a;}
+function nextLine(){let t,g=0;do{t=pick(pool());}while(t===lastSaid&&g++<5);return t;}
+function greet(){const d=VIS.last?(Date.now()-VIS.last)/864e5:0;let t;if(VIS.n>=5&&VIS.n%5===0)t=LINES.back5.replace('{n}',VIS.n);else if(d>7)t=pick(LINES.gone);else if(VIS.n>1&&Math.random()<.5)t=pick(LINES.back2);else t=nextLine();speak(t,8000);}
+let taps=[],idleAt=40;
+function tapYuki(){const now=Date.now();taps=taps.filter(t=>now-t<6000);taps.push(now);
+  if(YTH.nap){speak(pick(LINES.sleepy),4000);return false;}
+  if(taps.length>=5){speak(pick(LINES.tap5),7000);setMood('solemn',9000);return false;}
+  if(taps.length>=3){speak(pick(LINES.tap3),6000);return false;}
+  setMood('giggle',5000);speak(nextLine());return taps.length>=2;}
+function setMood(m,ms){YTH.mood=m;YTH.moodUntil=Date.now()+ms;onMood(m);}
+function moodTick(){const now=Date.now();if(YTH.moodUntil){if(now<YTH.moodUntil)return;YTH.moodUntil=0;}
+  const h=realHour();let m='smirk';if(YTH.nap||(h>=1&&h<5))m='sleepy';else if(stormy())m='solemn';if(m!==YTH.mood){YTH.mood=m;onMood(m);}}
+function talkTick(T){placeSay();if(!talkTick.g&&T>2.5){talkTick.g=1;greet();}if(say.hidden&&T>idleAt){idleAt=T+45+Math.random()*40;if(!document.hidden&&Math.random()<.8)speak(nextLine());}moodTick();}
 let stars=[],drops=[],cards=[],petals=[],mist=[];
 function build(){W=innerWidth;H=innerHeight;const DPR=Math.min(devicePixelRatio||1,(matchMedia('(pointer:coarse)').matches&&W*H<700000)?1.5:2);cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0);
-  k=Math.max(1.4,Math.min(W/520,H/380,2.6));YTH.x=W*.5;YTH.y=H*.72;
+  k=Math.max(1.4,Math.min(W/520,H/380,2.6));YTH.x=W<700?W*.34:W*.5;YTH.y=H*.72;
   stars=Array.from({length:120},()=>({x:Math.random()*W,y:Math.random()*H*.6,r:Math.random()*1.3+.3,p:Math.random()*6}));
   cards=Array.from({length:7},(_,i)=>({a:i/7*Math.PI*2,r:(70+Math.random()*40)*k,h:(-60-Math.random()*50)*k,sp:.2+Math.random()*.3,rot:Math.random()*6}));
   mist=Array.from({length:5},()=>({x:Math.random()*W,y:H*(.6+Math.random()*.3),w:(220+Math.random()*260)*k/1.6,v:(Math.random()-.5)*14}));}
@@ -228,7 +286,7 @@ function frame(now){const dt=Math.min(.05,(now-(frame.l||now))/1000);frame.l=now
   const rg=cx.createRadialGradient(YTH.x,YTH.y+10*k,0,YTH.x,YTH.y+10*k,W*.35);rg.addColorStop(0,'rgba(160,110,255,.22)');rg.addColorStop(1,'rgba(160,110,255,0)');cx.fillStyle=rg;cx.fillRect(0,H*.62,W,H*.38);
   // floating talisman cards orbiting her
   for(const q of cards){q.a+=dt*q.sp*(RM?0:1);const x=YTH.x+Math.cos(q.a)*q.r,y=YTH.y+q.h+Math.sin(q.a*1.3)*12*k,back=Math.sin(q.a)<0;if(back)drawCard(x,y,q,T);}
-  drawYuki(nt,c,T);
+  drawYuki(nt,c,T);talkTick(T);
   for(const q of cards){const x=YTH.x+Math.cos(q.a)*q.r,y=YTH.y+q.h+Math.sin(q.a*1.3)*12*k;if(Math.sin(q.a)>=0)drawCard(x,y,q,T);}
   // petals
   if(!RM&&petals.length<40&&Math.random()<dt*2)petals.push({x:Math.random()*W,y:-10,p:Math.random()*6,a:.9});
@@ -250,7 +308,7 @@ document.getElementById('fovX').addEventListener('click',()=>fov.hidden=true);fo
 addEventListener('keydown',e=>{if(e.key==='Escape')fov.hidden=true;});
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`}
-function fortuneCard(tier,text){const c=document.createElement('canvas');c.width=900;c.height=1200;const g=c.getContext('2d');
+function fortuneCard(tier,text,q){const c=document.createElement('canvas');c.width=900;c.height=1200;const g=c.getContext('2d');
   g.fillStyle='#0b0a12';g.fillRect(0,0,900,1200);const gr=g.createRadialGradient(450,420,0,450,420,600);gr.addColorStop(0,'rgba(120,80,200,.35)');gr.addColorStop(1,'rgba(120,80,200,0)');g.fillStyle=gr;g.fillRect(0,0,900,1200);
   g.strokeStyle='#9a9ab0';g.lineWidth=3;g.strokeRect(40,40,820,1120);g.strokeStyle='#6a4a9a';g.lineWidth=1.5;g.strokeRect(56,56,788,1088);
   g.fillStyle='#efe9f4';g.fillRect(120,220,660,760);g.fillStyle='#6a4a9a';g.fillRect(140,236,620,10);g.fillRect(140,954,620,10);
@@ -258,22 +316,37 @@ function fortuneCard(tier,text){const c=document.createElement('canvas');c.width
   g.fillStyle='#6a4a9a';g.font='700 24px sans-serif';g.fillText(tier.toUpperCase(),450,300);
   g.fillStyle='#120b1e';g.font='600 40px Georgia,serif';const words=text.split(' ');let line='',y=380;const lines=[];for(const w of words){const t=line?line+' '+w:w;if(g.measureText(t).width>580){lines.push(line);line=w;}else line=t;}lines.push(line);
   for(const l of lines){g.fillText(l,450,y);y+=56;}
-  g.fillStyle='#4a3f66';g.font='italic 24px Georgia,serif';g.fillText('— Auntie Yuki, 12,000 and counting',450,920);
+  if(q){g.fillStyle='#6a4a9a';g.font='italic 22px Georgia,serif';g.fillText('You asked: “'+q.slice(0,60)+'”',450,860);}g.fillStyle='#4a3f66';g.font='italic 24px Georgia,serif';g.fillText('— Auntie Yuki, 12,000 and counting',450,920);
   g.fillStyle='#9a9ab0';g.font='20px sans-serif';g.fillText('one fortune per soul per day',450,1080);
   return c.toDataURL('image/png');}
-function tellFortune(){fov.hidden=true;tal.classList.remove('burn','nap');fsave.hidden=true;fnote.textContent='';
-  if(YTH.nap){tal.classList.add('nap');ftier.textContent='DO NOT DISTURB';ftext.textContent='Auntie is napping. Twelve thousand years is a lot of years. Come back later.';fsig.textContent='zzz';fov.hidden=false;return;}
+// @@ritual  whisper a question, shuffle, pick, it burns into the fortune
+const RQ={q:''};
+function ritualUI(){let r=document.getElementById('ritual');if(r)return r;r=document.createElement('div');r.id='ritual';
+  r.innerHTML='<div class="rs" data-s="ask"><label for="fq">Whisper a question to the storm</label><input id="fq" maxlength="80" autocomplete="off" placeholder="...or stay silent. She hears that too."><button type="button" class="fbtn" id="fgo">Shuffle the talismans</button></div><div class="rs" data-s="pick" hidden><p class="rhint">Three talismans. One of them already knows. Pick.</p><div class="tdeck"><button type="button" class="tcard" aria-label="Talisman one"></button><button type="button" class="tcard" aria-label="Talisman two"></button><button type="button" class="tcard" aria-label="Talisman three"></button></div></div>';
+  const wrap=document.querySelector('.fpane .scroll-wrap');wrap.parentNode.insertBefore(r,wrap);
+  const fq=r.querySelector('#fq'),fgo=r.querySelector('#fgo'),pk=r.querySelector('[data-s=pick]');
+  fgo.addEventListener('click',()=>{RQ.q=(fq.value||'').replace(/[<>|]/g,'').replace(/\s+/g,' ').trim().slice(0,80);r.querySelector('[data-s=ask]').hidden=true;pk.hidden=false;pk.classList.remove('shuf');void pk.offsetWidth;pk.classList.add('shuf');
+    pk.querySelectorAll('.tcard').forEach(b=>{b.disabled=true;b.classList.remove('flip','dim')});setTimeout(()=>pk.querySelectorAll('.tcard').forEach(b=>b.disabled=false),RM?100:1450);});
+  fq.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fgo.click();}});
+  pk.querySelectorAll('.tcard').forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;pk.querySelectorAll('.tcard').forEach(o=>{o.disabled=true;if(o!==b)o.classList.add('dim')});b.classList.add('flip');setTimeout(()=>{r.hidden=true;revealFortune();},RM?150:900);}));
+  return r;}
+function tellFortune(){fov.hidden=true;tal.classList.remove('burn','nap');fsave.hidden=true;fnote.textContent='';const r=ritualUI(),wrap=document.querySelector('.fpane .scroll-wrap');
+  if(YTH.nap){r.hidden=true;wrap.hidden=false;tal.classList.add('nap');ftier.textContent='DO NOT DISTURB';ftext.textContent='Auntie is napping. Twelve thousand years is a lot of years. Come back later.';fsig.textContent='zzz';fov.hidden=false;return;}
   let used=null;try{used=localStorage.getItem(DAYKEY)}catch(e){}
-  if(used&&used.split('|')[0]===todayKey()){const [,tier,text]=used.split('|');ftier.textContent=tier.toUpperCase()+' · TODAY’S';ftext.textContent=text;fsig.textContent='— Auntie Yuki';fnote.textContent='One fortune per soul per day. This one is still yours. Hehehe…';fsave.href=fortuneCard(tier,text);fsave.hidden=false;fov.hidden=false;return;}
-  const r=Math.random();const tier=r<.08?'solemn':r<.45?'profound':'cheeky';const text=pick(FORTUNES[tier]);
-  try{localStorage.setItem(DAYKEY,`${todayKey()}|${tier}|${text}`)}catch(e){}
-  ftier.textContent=tier==='solemn'?'A SOLEMN ONE':tier==='profound'?'A PROFOUND ONE':'A CHEEKY ONE';ftext.textContent=text;fsig.textContent='— Auntie Yuki';
-  if(tier==='solemn'){fnote.textContent='The storm leans in. Auntie is not joking this time.';S.solemn=1;S.rain=1;setTimeout(()=>{S.solemn=0;S.rain=.5},40000);}
-  else fnote.textContent='Read it before it burns.';
-  fsave.href=fortuneCard(tier,text);fsave.hidden=false;fov.hidden=false;
+  if(used&&used.split('|')[0]===todayKey()){const [,tier,text,q]=used.split('|');r.hidden=true;wrap.hidden=false;ftier.textContent=tier.toUpperCase()+' · TODAY’S';ftext.textContent=text;fsig.textContent=(q?'You asked: “'+q+'” — ':'— ')+'Auntie Yuki';fnote.textContent='One fortune per soul per day. This one is still yours. Hehehe…';fsave.href=fortuneCard(tier,text,q);fsave.hidden=false;fov.hidden=false;return;}
+  r.hidden=false;r.querySelector('[data-s=ask]').hidden=false;r.querySelector('[data-s=pick]').hidden=true;r.querySelector('#fq').value='';wrap.hidden=true;fov.hidden=false;}
+function revealFortune(){const wrap=document.querySelector('.fpane .scroll-wrap');wrap.hidden=false;tal.classList.remove('burn','nap');void tal.offsetWidth;
+  const rr=Math.random();const tier=rr<.08?'solemn':rr<.45?'profound':'cheeky';const text=pick(FORTUNES[tier]);const q=RQ.q;
+  try{localStorage.setItem(DAYKEY,`${todayKey()}|${tier}|${text}|${q}`)}catch(e){}
+  ftier.textContent=tier==='solemn'?'A SOLEMN ONE · ZYMETH’S LIGHTNING':tier==='profound'?'A PROFOUND ONE':'A CHEEKY ONE';ftext.textContent=text;fsig.textContent=(q?'You asked: “'+q+'” — ':'— ')+'Auntie Yuki';
+  const pane=document.querySelector('.fpane');
+  if(tier==='solemn'){fnote.textContent='The storm leans in. Lord Zymeth himself is listening. Auntie is not joking this time.';zymethStrike();setMood('solemn',30000);pane.classList.remove('zy');void pane.offsetWidth;pane.classList.add('zy');}
+  else{fnote.textContent='Read it before it burns.';if(tier==='cheeky')setMood('giggle',8000);}
+  fsave.href=fortuneCard(tier,text,q);fsave.hidden=false;
   setTimeout(()=>{if(!fov.hidden){tal.classList.add('burn');fnote.textContent='Gone to violet smoke. Saved above if you were quick.';}},tier==='solemn'?14000:9000);}
 document.getElementById('draw').addEventListener('click',tellFortune);
-cv.addEventListener('click',e=>{if(Math.abs(e.clientX-YTH.x)<60*k&&e.clientY<YTH.y+10*k&&e.clientY>YTH.y-110*k)tellFortune();});
+cv.addEventListener('click',e=>{if(Math.abs(e.clientX-YTH.x)<60*k&&e.clientY<YTH.y+10*k&&e.clientY>YTH.y-110*k)tapYuki();});
+const drawBtn=document.getElementById('draw');drawBtn.addEventListener('click',()=>{if(RQ.q===''&&!document.getElementById('ritual'))speak('Whisper your question, then let the talismans choose. Heeh…',5000);});
 // theme: official YouTube embed, loads only on tap
 const yt=document.getElementById('yt'),ytVid=document.getElementById('ytVid'),themeBtn=document.getElementById('theme');
 themeBtn.addEventListener('click',()=>{const on=yt.hidden;yt.hidden=!on;themeBtn.setAttribute('aria-pressed',on);
@@ -287,5 +360,6 @@ function thunder(){if(!ac||!soundOn)return;try{const src=ac.createBufferSource()
 rainBtn.addEventListener('click',()=>{soundOn=!soundOn;if(!ac)startAudio();if(ac&&ac.state==='suspended')ac.resume();if(rainGain)rainGain.gain.setTargetAtTime(soundOn?.2:0,ac.currentTime,.4);rainBtn.setAttribute('aria-pressed',soundOn);});
 }
 </script>
+<script src="fx.js" defer></script>
 </body>
 </html>
