@@ -64,6 +64,44 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
 .yt-msg{margin:6px 0 0;font-size:13px;color:var(--soft)}
 @media(max-width:600px){.yt{top:calc(168px + env(safe-area-inset-top,0px))}}
 @media(max-width:600px){.plate{padding:10px 14px}.plate p{font-size:14px}.dock{gap:8px;padding:8px}.grp b{display:none}button{padding:0 9px}}
+#shr,#lan{border:1px solid var(--line);min-height:44px}
+#lan{border-color:var(--ember);color:var(--ember)}
+#scene.pt{cursor:pointer}
+.ov{position:fixed;inset:0;z-index:5;background:rgba(5,4,10,.82);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-left,0px))}
+.ov[hidden]{display:none}
+.pane{position:relative;width:min(880px,100%);max-height:min(88vh,100%);overflow:auto;background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--ember);padding:22px 24px 26px;box-shadow:0 0 0 1px rgba(8,6,14,.9),0 0 60px rgba(120,80,200,.18)}
+.pane h2{font:800 clamp(24px,3.6vw,34px)/1.1 "Shippori Mincho B1",Georgia,serif;margin:0 0 4px;letter-spacing:-.01em}
+.pane .sub{margin:0 0 16px;color:var(--soft);font-size:15px}
+.pane .x{position:absolute;top:10px;right:10px;border:1px solid var(--line);min-height:36px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.panel{position:relative;aspect-ratio:3/4;background:#0b0a12;border:1px solid var(--line);overflow:hidden;cursor:pointer;padding:0;text-align:left}
+.panel img,.panel svg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.panel b{position:absolute;left:0;right:0;bottom:0;padding:6px 8px;font-size:12px;color:var(--ink);background:linear-gradient(transparent,rgba(5,4,10,.9))}
+.big{display:none;margin-top:14px;text-align:center}
+.big.on{display:block}
+.big img,.big svg{max-width:100%;max-height:62vh;border:1px solid var(--line);background:#0b0a12}
+.big p{color:var(--soft);font-size:14px;margin:8px 0 0}
+.shrine{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:20px;align-items:start}
+.shrine svg{width:100%;height:auto;display:block}
+.shrine h3{font:800 17px "Shippori Mincho B1",Georgia,serif;margin:16px 0 4px;color:var(--jade)}
+.shrine p{margin:0 0 8px;font-size:15px;line-height:1.6}
+.shrine .ph{color:var(--soft);font-style:italic}
+.rites{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.rites span{border:1px solid rgba(190,190,215,.3);padding:4px 10px;font-size:13px;color:var(--soft)}
+.lanf{display:grid;gap:10px;max-width:460px}
+.lanf label{display:grid;gap:4px;font-size:13px;color:var(--soft)}
+.lanf input{min-height:40px;padding:0 10px;font:500 15px "Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid rgba(190,190,215,.3)}
+.lanf button{border:1px solid var(--ember);color:var(--ember);justify-self:start;min-height:42px;padding:0 16px}
+.lanf button[disabled]{opacity:.5}
+.lanmsg{font-size:13px;color:var(--soft);margin:4px 0 0;min-height:1.2em}
+.lanlist{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:6px;max-height:34vh;overflow:auto}
+.lanlist li{display:flex;gap:10px;align-items:baseline;font-size:14px;border-left:2px solid var(--ember);padding:4px 10px;background:rgba(255,255,255,.03)}
+.lanlist li small{color:var(--soft);white-space:nowrap}
+.lanlist li button{min-height:28px;padding:0 8px;font-size:12px;border:1px solid rgba(190,190,215,.3);margin-left:auto}
+.tip{position:fixed;z-index:3;pointer-events:none;max-width:260px;background:var(--panel);border:1px solid var(--ember);padding:8px 10px;font-size:13px;line-height:1.4;transform:translate(-50%,-110%)}
+.tip[hidden]{display:none}
+.tip small{display:block;color:var(--soft);margin-top:2px}
+@media(max-width:600px){.shrine{grid-template-columns:1fr}.shrine svg{max-width:140px}.pane{padding:18px 16px 22px}}
 </style>
 </head>
 <body>
@@ -72,7 +110,7 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
 
 <div class="plate">
   <h1>lotusclan2026</h1>
-  <p>Black stone, silver mist, violet light. The rain comes and goes.</p>
+  <p>Black stone, silver mist, violet light. Click a tower, ask the fortune teller, light a lantern.</p>
   <div class="stats"><span id="wx">Clear skies</span><span id="clock">9:00 am</span><span>Lanterns <b id="lit">0</b></span></div>
 </div>
 
@@ -87,6 +125,8 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
   <button id="mus" aria-pressed="false">Temple drone</button>
   <button id="ytb" aria-expanded="false" aria-controls="yt">YouTube music</button>
   <label class="file" for="trk">Your own track<input id="trk" type="file" accept="audio/*"></label>
+  <button id="shr">Shrine</button>
+  <button id="lan">Light a lantern</button>
 </div>
 
 <section class="yt" id="yt" hidden aria-label="YouTube music player">
@@ -96,6 +136,63 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
   <p class="yt-msg" id="ytMsg">Any YouTube song, OST or playlist link works.</p>
 </section>
 <audio id="own" loop hidden></audio>
+<div class="ov" id="gal" hidden role="dialog" aria-modal="true" aria-labelledby="galH">
+  <div class="pane">
+    <button class="x" id="galX" aria-label="Close gallery">✕</button>
+    <h2 id="galH">Gallery</h2>
+    <p class="sub" id="galS"></p>
+    <div class="grid" id="galG"></div>
+    <div class="big" id="galB"></div>
+  </div>
+</div>
+
+<div class="ov" id="shrine" hidden role="dialog" aria-modal="true" aria-labelledby="shrH">
+  <div class="pane">
+    <button class="x" id="shrX" aria-label="Close shrine">✕</button>
+    <h2 id="shrH">Shrine of the Clan Consultant</h2>
+    <p class="sub">Keeper of the village, drawer of comics, bringer of rain.</p>
+    <div class="shrine">
+      <svg viewBox="0 0 180 240" aria-hidden="true">
+        <defs><radialGradient id="sg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#b48cff" stop-opacity=".55"/><stop offset="1" stop-color="#b48cff" stop-opacity="0"/></radialGradient></defs>
+        <rect width="180" height="240" fill="#0b0a12"/>
+        <circle cx="90" cy="96" r="80" fill="url(#sg)"/>
+        <path d="M30 230 L40 120 Q90 80 140 120 L150 230 Z" fill="#1f1d28" stroke="#9a9ab0" stroke-width="1.5"/>
+        <path d="M20 122 Q90 60 160 122 L148 128 Q90 84 32 128 Z" fill="#141220" stroke="#9a9ab0"/>
+        <path d="M44 90 Q90 50 136 90 L128 94 Q90 62 52 94 Z" fill="#141220" stroke="#9a9ab0"/>
+        <ellipse cx="90" cy="150" rx="22" ry="30" fill="#05040a" stroke="#b48cff" stroke-width="1.5"/>
+        <circle cx="90" cy="150" r="9" fill="#b48cff" opacity=".9"/>
+        <rect x="60" y="206" width="60" height="6" fill="#9a9ab0"/>
+        <g fill="#b48cff"><circle cx="46" cy="186" r="3"/><circle cx="134" cy="186" r="3"/></g>
+      </svg>
+      <div>
+        <h3>Who keeps this village</h3>
+        <p class="ph">A short bio goes here: who you are to this village, what you draw, what you advise on. Keep it in character; no real-world names, employers or contact details live in these walls.</p>
+        <h3>What the shrine holds</h3>
+        <p class="ph">Comics. Art. Occasional strategic prophecy. Rain, on request.</p>
+        <h3>Rites of the clan</h3>
+        <div class="rites"><span>Comics</span><span>Illustration</span><span>Strategy</span><span>Worldbuilding</span><span>Rain summoning</span></div>
+        <h3>Leave an offering</h3>
+        <p>Light a visitor lantern from the bar below. Creepy little messages are welcome. Kind ones too.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="lanov" hidden role="dialog" aria-modal="true" aria-labelledby="lanH">
+  <div class="pane">
+    <button class="x" id="lanX" aria-label="Close">✕</button>
+    <h2 id="lanH">Light a visitor lantern</h2>
+    <p class="sub">Your words float up over the village for everyone who visits. Plain text only, 80 characters, one lantern a minute.</p>
+    <form class="lanf" id="lanForm">
+      <label>Your message<input id="lanText" maxlength="80" required autocomplete="off" placeholder="we are watching the rain with you"></label>
+      <label>Sign it (optional)<input id="lanName" maxlength="20" autocomplete="off" placeholder="a wandering ghost"></label>
+      <button type="submit" id="lanGo">Light it 🏮</button>
+      <p class="lanmsg" id="lanMsg"></p>
+    </form>
+    <ul class="lanlist" id="lanList"></ul>
+  </div>
+</div>
+<div class="tip" id="tip" hidden></div>
 
 <script>
 {
@@ -116,6 +213,294 @@ const WALLS=['#2a2434','#1f1d28','#3a2e4e','#262630','#312a3e'].map(hex),ROOFS=[
 const S={t:.38,rain:0,target:0,cloud:0,wet:0,wind:.3,flash:0,bolt:null,mode:{wx:'auto',tm:'auto'},next:18,phase:'clear'};
 let drops=[],splashes=[],ripples=[],smoke=[];
 
+// ===== Forbidden Tree, town square, gallery towers, shrine, visitor lanterns =====
+const GALLERIES=[
+  {name:'Tower of First Pages',desc:'Where the comics begin. Panels fill in as the artist posts them.',items:[{t:'Page one'},{t:'Page two'},{t:'Page three'},{t:'Page four'}]},
+  {name:'Tower of Ink',desc:'Illustrations and studies, drawn by lantern light.',items:[{t:'Study in violet'},{t:'Rain over the square'},{t:'The watcher'}]},
+  {name:'Tower of Sketches',desc:'Rough things, half-finished things, things that escaped.',items:[{t:'Sketchbook I'},{t:'Sketchbook II'},{t:'Sketchbook III'},{t:'Sketchbook IV'},{t:'Sketchbook V'}]},
+  {name:'Tower of Omens',desc:'Strange pictures that arrived in the night.',items:[{t:'Omen 1'},{t:'Omen 2'}]},
+];
+const tree={cv:null,x:0,y:0,motes:[],glows:[]};
+const sq={x:0,y:0,r:0,drops:[]};
+let floaters=[],lanterns=[],lanStorage=null,hoverTower=-1,hoverFloat=null,mouse={x:-1,y:-1};
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+// offscreen render of the big tree so each frame only stamps it
+function treeBranch(g,x,y,len,ang,w,depth,sd){if(depth===0||len<4)return;const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;
+  const cxp=x+Math.cos(ang+.5)*len*.5,cyp=y+Math.sin(ang+.5)*len*.5;
+  g.lineWidth=w;g.strokeStyle='#1a1822';g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(cxp,cyp,ex,ey);g.stroke();
+  g.lineWidth=Math.max(.8,w*.45);g.strokeStyle='rgba(190,190,215,.55)';g.beginPath();g.moveTo(x-w*.22,y);g.quadraticCurveTo(cxp-w*.22,cyp,ex-w*.1,ey);g.stroke();
+  if(depth<=2){g.strokeStyle='rgba(150,110,220,.5)';g.lineWidth=1;for(let i=0;i<3;i++){const px=ex+(sd()-.5)*8,py=ey;g.beginPath();g.moveTo(px,py);g.quadraticCurveTo(px+4,py+10+sd()*8,px-2,py+18+sd()*14);g.stroke();}}
+  const a=sd(),b=sd(),n=depth>4?2:(sd()>.3?2:1);
+  treeBranch(g,ex,ey,len*(.66+a*.14),ang-.35-a*.45,w*.68,depth-1,sd);
+  if(n>1)treeBranch(g,ex,ey,len*(.6+b*.16),ang+.3+b*.45,w*.62,depth-1,sd);
+  if(depth>3&&sd()>.6)treeBranch(g,ex+(ex-x)*.4,ey+(ey-y)*.4,len*.5,ang+(sd()-.5)*1.4,w*.4,depth-2,sd);}
+function buildExtras(){
+  const gy=H*.78;tree.x=W*.12;tree.y=gy+4*k;const th=Math.min(H*.62,W*.5);const sc=th/300;
+  const oc=document.createElement('canvas');oc.width=Math.ceil(W*.5);oc.height=Math.ceil(th*1.15);const g=oc.getContext('2d');
+  tree.ox=oc.width*.5;tree.oy=oc.height-4;tree.cv=oc;
+  let s=4242;const sd=()=>(s=s*16807%2147483647)/2147483647;
+  g.save();g.translate(tree.ox,tree.oy);g.lineCap='round';
+  // trunk: tapered, slightly twisted, silver-grey with violet tint
+  const tw=46*sc,trunkH=120*sc;const grad=g.createLinearGradient(-tw,0,tw,0);grad.addColorStop(0,'#0b0a12');grad.addColorStop(.35,'#3a3846');grad.addColorStop(.55,'#8c8aa0');grad.addColorStop(.75,'#4a3f66');grad.addColorStop(1,'#09080d');
+  g.fillStyle=grad;g.beginPath();g.moveTo(-tw*1.5,0);g.quadraticCurveTo(-tw*.9,-trunkH*.3,-tw*.55,-trunkH);g.lineTo(tw*.5,-trunkH*1.02);g.quadraticCurveTo(tw*.95,-trunkH*.35,tw*1.6,0);g.closePath();g.fill();
+  // roots
+  g.strokeStyle='#1f1d28';g.lineWidth=8*sc;for(const [dx,ln] of [[-1.9,70],[-1.1,40],[1.3,50],[2.1,80]]){g.beginPath();g.moveTo(dx*tw*.6,-6*sc);g.quadraticCurveTo(dx*tw*.9,4*sc,dx*tw*.7+ln*sc*Math.sign(dx),8*sc);g.stroke();}
+  // bark grooves
+  g.strokeStyle='rgba(5,4,10,.7)';g.lineWidth=1.5*sc;for(let i=0;i<9;i++){const x0=-tw*1.1+i*tw*.27;g.beginPath();g.moveTo(x0,0);g.bezierCurveTo(x0+(sd()-.5)*20*sc,-trunkH*.35,x0+(sd()-.5)*20*sc,-trunkH*.7,x0*.55,-trunkH);g.stroke();}
+  g.strokeStyle='rgba(200,200,225,.25)';g.lineWidth=1*sc;for(let i=0;i<5;i++){const x0=-tw*.8+i*tw*.4;g.beginPath();g.moveTo(x0,-trunkH*.1);g.bezierCurveTo(x0+(sd()-.5)*14*sc,-trunkH*.4,x0+(sd()-.5)*14*sc,-trunkH*.75,x0*.6,-trunkH*.95);g.stroke();}
+  // limbs
+  const base=[-trunkH*.98,-trunkH*.9,-trunkH*.8,-trunkH*.7];
+  treeBranch(g,-tw*.2,base[0],78*sc,-Math.PI/2-.25,16*sc,7,sd);
+  treeBranch(g,tw*.25,base[1],70*sc,-Math.PI/2+.45,14*sc,7,sd);
+  treeBranch(g,-tw*.45,base[2],58*sc,-Math.PI/2-.95,11*sc,6,sd);
+  treeBranch(g,tw*.5,base[3],50*sc,-Math.PI/2+1.05,10*sc,6,sd);
+  treeBranch(g,0,base[0]-6*sc,60*sc,-Math.PI/2+.05,10*sc,6,sd);
+  // hollows: the tree watches
+  tree.glows=[];for(const [hx,hy,r] of [[-tw*.25,-trunkH*.55,7],[tw*.3,-trunkH*.42,5],[-tw*.05,-trunkH*.78,4]]){g.fillStyle='#05040a';g.beginPath();g.ellipse(hx,hy,r*sc,r*1.5*sc,0,0,7);g.fill();tree.glows.push({x:hx,y:hy,r:r*sc,p:sd()*6});}
+  g.restore();
+  tree.motes=Array.from({length:22},()=>({x:(sd()-.5)*th*.9,y:-th*(.3+sd()*.6),v:4+sd()*8,p:sd()*6,r:1+sd()*1.6}));
+  tree.sc=sc;tree.th=th;
+  // town square
+  sq.x=W*.5;sq.y=H*.84;sq.r=Math.min(W*.16,150*k);sq.drops=[];
+}
+function drawTree(nt,c,T,dt){if(!tree.cv)return;const sway=RM?0:Math.sin(T*.5)*S.wind*.012;
+  cx.save();cx.translate(tree.x,tree.y);cx.rotate(sway);
+  // night tint + storm tint
+  const bucket=Math.round(nt*10);if(tree.tb!==bucket){tree.tb=bucket;if(!tree.tc){tree.tc=document.createElement('canvas');}tree.tc.width=tree.cv.width;tree.tc.height=tree.cv.height;const g=tree.tc.getContext('2d');g.drawImage(tree.cv,0,0);g.globalCompositeOperation='source-atop';g.fillStyle=`rgba(8,6,20,${bucket/10*.45})`;g.fillRect(0,0,tree.tc.width,tree.tc.height);}
+  cx.drawImage(tree.tc,-tree.ox,-tree.oy);
+  // violet aura in the canopy
+  const aura=cx.createRadialGradient(0,-tree.th*.72,0,0,-tree.th*.72,tree.th*.5);aura.addColorStop(0,`rgba(140,100,220,${.10+nt*.14})`);aura.addColorStop(1,'rgba(140,100,220,0)');cx.fillStyle=aura;cx.fillRect(-tree.th*.6,-tree.th*1.25,tree.th*1.2,tree.th*.9);
+  // glowing hollows
+  for(const h of tree.glows){const a=.35+nt*.5+Math.sin(T*1.3+h.p)*.15;const gr=cx.createRadialGradient(h.x,h.y,0,h.x,h.y,h.r*4);gr.addColorStop(0,`rgba(180,140,255,${a})`);gr.addColorStop(1,'rgba(180,140,255,0)');cx.fillStyle=gr;cx.beginPath();cx.arc(h.x,h.y,h.r*4,0,7);cx.fill();cx.fillStyle=`rgba(220,200,255,${a})`;cx.beginPath();cx.ellipse(h.x,h.y,h.r*.5,h.r*.9,0,0,7);cx.fill();}
+  // drifting motes falling from the canopy
+  for(const m of tree.motes){m.y+=m.v*dt*(RM?.2:1);m.x+=Math.sin(T*.8+m.p)*8*dt+S.wind*10*dt;if(m.y>-10){m.y=-tree.th*(.5+Math.random()*.5);m.x=(Math.random()-.5)*tree.th*.9;}
+    cx.fillStyle=`rgba(190,160,255,${.25+nt*.45})`;cx.beginPath();cx.arc(m.x,m.y,m.r*k,0,7);cx.fill();}
+  cx.restore();}
+function drawSquare(nt,c,T,dt,top,bot){const {x,y,r}=sq;const stone=(h,a=1)=>css(mix(mix(hex(h),P.night,nt*.6),P.slate,c*.2),a);
+  // paving
+  cx.fillStyle=stone('#2a2834');cx.beginPath();cx.ellipse(x,y,r*1.9,r*.5,0,0,7);cx.fill();
+  cx.strokeStyle='rgba(190,190,215,.18)';cx.lineWidth=1;for(let i=1;i<=3;i++){cx.beginPath();cx.ellipse(x,y,r*1.9*i/3.2,r*.5*i/3.2,0,0,7);cx.stroke();}
+  for(let i=0;i<10;i++){const a=i/10*Math.PI*2;cx.beginPath();cx.moveTo(x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.145);cx.lineTo(x+Math.cos(a)*r*1.85,y+Math.sin(a)*r*.49);cx.stroke();}
+  // lower basin
+  const bw=r*.72,bh=r*.19;cx.fillStyle=stone('#1a1822');cx.beginPath();cx.ellipse(x,y+2*k,bw,bh,0,0,7);cx.fill();
+  cx.fillStyle=stone('#3a3846');cx.beginPath();cx.ellipse(x,y-10*k,bw,bh,0,0,7);cx.fill();cx.fillStyle=stone('#1a1822');cx.fillRect(x-bw,y-10*k,bw*2,12*k);cx.fillStyle=stone('#3a3846');cx.beginPath();cx.ellipse(x,y+2*k,bw,bh,0,Math.PI,0,true);cx.fill();
+  // water in lower basin
+  const wat=css(mix(mix(bot,top,.5),[150,120,220],nt*.5),.75);cx.fillStyle=wat;cx.beginPath();cx.ellipse(x,y-10*k,bw*.9,bh*.8,0,0,7);cx.fill();
+  if(nt>.2){const gl=cx.createRadialGradient(x,y-10*k,0,x,y-10*k,bw);gl.addColorStop(0,`rgba(180,140,255,${.35*nt})`);gl.addColorStop(1,'rgba(180,140,255,0)');cx.fillStyle=gl;cx.beginPath();cx.ellipse(x,y-10*k,bw,bh,0,0,7);cx.fill();}
+  // pedestal, upper bowl, finial
+  const ph=r*.42;cx.fillStyle=stone('#262630');cx.fillRect(x-6*k,y-10*k-ph,12*k,ph);cx.fillStyle='rgba(190,190,215,.35)';cx.fillRect(x-6*k,y-10*k-ph,2*k,ph);
+  const uy=y-10*k-ph;cx.fillStyle=stone('#3a3846');cx.beginPath();cx.ellipse(x,uy,bw*.4,bh*.42,0,0,7);cx.fill();cx.fillStyle=stone('#1a1822');cx.beginPath();cx.ellipse(x,uy,bw*.4,bh*.42,0,0,Math.PI);cx.fill();cx.fillStyle=stone('#3a3846');cx.fillRect(x-bw*.4,uy,bw*.8,5*k);cx.beginPath();cx.ellipse(x,uy+5*k,bw*.4,bh*.42,0,0,Math.PI);cx.fill();
+  cx.fillStyle=wat;cx.beginPath();cx.ellipse(x,uy,bw*.34,bh*.3,0,0,7);cx.fill();
+  cx.fillStyle=stone('#262630');cx.fillRect(x-3*k,uy-22*k,6*k,22*k);cx.fillStyle=css(P.ember,.5+nt*.5);cx.beginPath();cx.arc(x,uy-26*k,4*k,0,7);cx.fill();
+  // water arcs
+  if(!RM&&sq.drops.length<160)for(let i=0;i<5;i++){const a=Math.random()*Math.PI*2;sq.drops.push({x:x,y:uy-22*k,vx:Math.cos(a)*(26+Math.random()*22)*k,vy:-(70+Math.random()*40)*k,z:Math.sin(a),life:1});}
+  cx.fillStyle=css(mix([200,200,230],[190,160,255],nt),.8);
+  sq.drops=sq.drops.filter(d=>{d.vy+=160*k*dt;d.x+=d.vx*dt;d.y+=d.vy*dt;const floor=uy+bh*.4*d.z;if(d.y>floor&&d.vy>0){return false;}cx.fillRect(d.x,d.y,2.2*k,2.2*k+Math.max(0,d.vy*.012));return true;});
+  // ripples
+  if(S.rain>.1&&Math.random()<S.rain*dt*8)ripples.push({x:x+(Math.random()-.5)*bw*1.6,y:y-10*k+(Math.random()-.5)*bh,r:1,a:.6});
+}
+// visitor lanterns rising over the village
+function spawnFloat(l,fresh){floaters.push({l,x:fresh?sq.x:Math.random()*W,y:fresh?sq.y-40*k:H*(.2+Math.random()*.5),v:(6+Math.random()*5)*k,p:Math.random()*6,s:(1.1+Math.random()*.6)*k,a:0});}
+function drawFloating(nt,c,T,dt){const col=css(mix([210,200,235],[180,140,255],.4+nt*.4));hoverFloat=null;
+  for(const f of floaters){f.y-=f.v*dt*(RM?.2:1);f.x+=Math.sin(T*.6+f.p)*10*dt+S.wind*6*dt;f.a=Math.min(1,f.a+dt*.5);if(f.y<-40*k){f.y=H*.8;f.x=Math.random()*W;f.a=0;}
+    const w=14*f.s,h=20*f.s,fl=.6+Math.sin(T*7+f.p)*.15;
+    const gr=cx.createRadialGradient(f.x,f.y,0,f.x,f.y,w*3.2);gr.addColorStop(0,`rgba(180,140,255,${.5*f.a*fl})`);gr.addColorStop(1,'rgba(180,140,255,0)');cx.fillStyle=gr;cx.beginPath();cx.arc(f.x,f.y,w*3.2,0,7);cx.fill();
+    cx.globalAlpha=f.a;cx.fillStyle='#1a1822';cx.fillRect(f.x-w*.4,f.y-h*.62,w*.8,3*f.s);cx.fillRect(f.x-w*.4,f.y+h*.5,w*.8,3*f.s);
+    cx.fillStyle=col;cx.beginPath();cx.ellipse(f.x,f.y,w,h*.55,0,0,7);cx.fill();
+    cx.strokeStyle='rgba(20,12,30,.55)';cx.lineWidth=1;for(const dx of[-.5,0,.5]){cx.beginPath();cx.moveTo(f.x+dx*w,f.y-h*.5);cx.lineTo(f.x+dx*w,f.y+h*.5);cx.stroke();}
+    cx.fillStyle=`rgba(255,245,230,${fl})`;cx.beginPath();cx.ellipse(f.x,f.y+h*.05,w*.3,h*.25,0,0,7);cx.fill();
+    cx.strokeStyle=col;cx.beginPath();cx.moveTo(f.x,f.y+h*.6);cx.lineTo(f.x+Math.sin(T*2+f.p)*3,f.y+h*1.1);cx.stroke();cx.globalAlpha=1;
+    if(Math.abs(mouse.x-f.x)<w*1.6&&Math.abs(mouse.y-f.y)<h)hoverFloat=f;}
+}
+function towerTop(o){let h=0;for(let i=0;i<o.tiers;i++){const th=o.th*(1-i*.08);h+=th+th*.42*.6;}return o.y-h-30*k;}
+function towerAt(px,py){for(let i=0;i<towers.length;i++){const o=towers[i];if(Math.abs(px-o.x)<o.w*.55&&py<o.y+6*k&&py>towerTop(o))return i;}return -1;}
+// overlays
+const tip=document.getElementById('tip');
+function showTip(x,y,html){tip.innerHTML=html;tip.hidden=false;tip.style.left=Math.max(140,Math.min(W-140,x))+'px';tip.style.top=Math.max(60,y-14)+'px';}
+cv.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;hoverTower=towerAt(e.clientX,e.clientY);
+  if(hoverFloat){showTip(hoverFloat.x,hoverFloat.y-24*k,`${esc(hoverFloat.l.text)}<small>${esc(hoverFloat.l.name||'a visitor')}</small>`);cv.classList.add('pt');}
+  else if(yukiAt(e.clientX,e.clientY)){YTH.hover=true;showTip(YTH.x,YTH.y-96*k,'Yuki Tao Hu<small>ask your fortune</small>');cv.classList.add('pt');}
+  else if(hoverTower>=0){YTH.hover=false;const g=GALLERIES[hoverTower%GALLERIES.length];showTip(towers[hoverTower].x,towerTop(towers[hoverTower]),`${esc(g.name)}<small>click to enter</small>`);cv.classList.add('pt');}
+  else{YTH.hover=false;tip.hidden=true;cv.classList.remove('pt');}});
+cv.addEventListener('mouseleave',()=>{mouse.x=mouse.y=-1;tip.hidden=true;});
+cv.addEventListener('click',e=>{if(hoverFloat){return;}if(yukiAt(e.clientX,e.clientY)){tellFortune();return;}const i=towerAt(e.clientX,e.clientY);if(i>=0)openGallery(i);});
+cv.addEventListener('touchend',e=>{const t=e.changedTouches[0];if(yukiAt(t.clientX,t.clientY)){tellFortune();return;}const i=towerAt(t.clientX,t.clientY);if(i>=0){openGallery(i);}},{passive:true});
+function placeholderSVG(i,t){const hue=['#b48cff','#9a9ab0','#6a4a9a','#dcdcf0'][i%4];return `<svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="400" fill="#0b0a12"/><rect x="14" y="14" width="272" height="372" fill="none" stroke="#9a9ab0" stroke-width="2"/><rect x="28" y="28" width="244" height="150" fill="#141220" stroke="${hue}"/><rect x="28" y="192" width="116" height="194" fill="#141220" stroke="${hue}"/><rect x="156" y="192" width="116" height="194" fill="#141220" stroke="${hue}"/><circle cx="150" cy="103" r="34" fill="none" stroke="${hue}" stroke-width="3" opacity=".8"/><path d="M60 330 q30 -60 60 0 t60 0" fill="none" stroke="${hue}" stroke-width="3" opacity=".7"/><text x="150" y="110" text-anchor="middle" font-family="Georgia,serif" font-size="28" fill="${hue}">${esc(t)}</text><text x="150" y="372" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#9a9ab0">panel coming soon</text></svg>`;}
+const gal=document.getElementById('gal'),galG=document.getElementById('galG'),galB=document.getElementById('galB');
+function openGallery(i){const g=GALLERIES[i%GALLERIES.length];document.getElementById('galH').textContent=g.name;document.getElementById('galS').textContent=g.desc;galB.className='big';galB.innerHTML='';
+  galG.innerHTML=g.items.map((it,j)=>`<button class="panel" data-j="${j}" aria-label="${esc(it.t)}">${it.src?`<img src="${esc(it.src)}" alt="${esc(it.t)}" loading="lazy">`:placeholderSVG(j,it.t)}<b>${esc(it.t)}</b></button>`).join('');
+  galG.querySelectorAll('.panel').forEach(b=>b.addEventListener('click',()=>{const it=g.items[+b.dataset.j];galB.innerHTML=(it.src?`<img src="${esc(it.src)}" alt="${esc(it.t)}">`:placeholderSVG(+b.dataset.j,it.t))+`<p>${esc(it.t)}${it.cap?' · '+esc(it.cap):''}</p>`;galB.className='big on';galB.scrollIntoView({behavior:'smooth',block:'nearest'});}));
+  gal.hidden=false;tip.hidden=true;}
+document.getElementById('galX').addEventListener('click',()=>gal.hidden=true);
+const shrineEl=document.getElementById('shrine');document.getElementById('shr').addEventListener('click',()=>shrineEl.hidden=false);document.getElementById('shrX').addEventListener('click',()=>shrineEl.hidden=true);
+const lanov=document.getElementById('lanov'),lanList=document.getElementById('lanList'),lanMsg=document.getElementById('lanMsg'),lanGo=document.getElementById('lanGo');
+document.getElementById('lan').addEventListener('click',()=>{lanov.hidden=false;renderLanList();});document.getElementById('lanX').addEventListener('click',()=>lanov.hidden=true);
+for(const ov of[gal,shrineEl,lanov])ov.addEventListener('click',e=>{if(e.target===ov)ov.hidden=true;});
+addEventListener('keydown',e=>{if(e.key==='Escape'){gal.hidden=shrineEl.hidden=lanov.hidden=true;const f=document.getElementById('fov');if(f)f.hidden=true;}});
+// lantern storage: shared through /api/lanterns when the site has storage, otherwise kept in this browser only
+const ADMIN=(location.hash.match(/^#keeper=(.+)$/)||[])[1]||'';
+function loadLocal(){try{return JSON.parse(localStorage.getItem('lanterns')||'[]')}catch(e){return []}}
+function saveLocal(a){try{localStorage.setItem('lanterns',JSON.stringify(a.slice(-40)))}catch(e){}}
+function fmtWhen(ts){const d=Date.now()-ts;if(d<6e4)return'just now';if(d<36e5)return Math.floor(d/6e4)+' min ago';if(d<864e5)return Math.floor(d/36e5)+' h ago';return Math.floor(d/864e5)+' d ago';}
+function renderLanList(){lanList.innerHTML=lanterns.slice().reverse().slice(0,60).map(l=>`<li><span>${esc(l.text)}</span><small>${esc(l.name||'a visitor')} · ${fmtWhen(l.ts)}</small>${ADMIN&&lanStorage?`<button data-id="${esc(l.id)}">hide</button>`:''}</li>`).join('')||'<li><span>No lanterns yet. Yours could be the first.</span></li>';
+  lanList.querySelectorAll('button').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{const r=await fetch(`/api/lanterns?id=${encodeURIComponent(b.dataset.id)}`,{method:'DELETE',headers:{'x-keeper':ADMIN}});if(r.ok){lanterns=lanterns.filter(l=>l.id!==b.dataset.id);floaters=floaters.filter(f=>f.l.id!==b.dataset.id);renderLanList();}else b.disabled=false;}catch(e){b.disabled=false;}}));}
+async function loadLanterns(){try{const r=await fetch('/api/lanterns');if(!r.ok)throw 0;const d=await r.json();lanStorage=!!d.storage;lanterns=d.lanterns||[];}catch(e){lanStorage=false;lanterns=[];}
+  if(!lanStorage){lanterns=loadLocal();lanMsg.textContent='Shared lanterns are not switched on yet, so this one stays in your browser only.';}
+  floaters=[];for(const l of lanterns.slice(-24))spawnFloat(l,false);}
+loadLanterns();
+let lastLit=0;
+document.getElementById('lanForm').addEventListener('submit',async e=>{e.preventDefault();const text=document.getElementById('lanText').value.replace(/\s+/g,' ').trim().slice(0,80),name=document.getElementById('lanName').value.replace(/\s+/g,' ').trim().slice(0,20);
+  if(!text)return;if(Date.now()-lastLit<6e4){lanMsg.textContent='One lantern a minute. Let this one rise first.';return;}
+  lanGo.disabled=true;let l={id:'local'+Date.now(),text,name,ts:Date.now()};
+  if(lanStorage){try{const r=await fetch('/api/lanterns',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({text,name})});const d=await r.json().catch(()=>({}));if(!r.ok){lanMsg.textContent=d.error||'The lantern would not light. Try again in a moment.';lanGo.disabled=false;return;}l=d.lantern;}catch(err){lanMsg.textContent='Could not reach the village. Try again in a moment.';lanGo.disabled=false;return;}}
+  else{const a=loadLocal();a.push(l);saveLocal(a);}
+  lanterns.push(l);spawnFloat(l,true);lastLit=Date.now();lanMsg.textContent='Lit. Watch it rise over the square.';document.getElementById('lanText').value='';renderLanList();lanGo.disabled=false;setTimeout(()=>lanov.hidden=true,900);});
+
+// ===== Yuki Tao Hu, the fortune teller. 12,000 years old, looks 21, cheerful about death and solemn about life. =====
+const FORTUNES={
+ cheeky:[
+  'You will reply "haha yes" to a message you did not read. The dead saw. They giggled.',
+  'Something you lost is under the thing you refuse to move.',
+  'A small ghost has adopted you. Feed it by finishing one task today.',
+  'Your next brilliant idea arrives in the shower. Towels remember nothing.',
+  'You are 40% rain today. Act accordingly.',
+  'Someone will say "per my last email." Survive it.',
+  'Auntie has lived 12,000 years and still cannot fold a fitted sheet. Forgive yourself one small thing.',
+  'The snack you are thinking about is a yes.',
+  'A door will stick. Push, do not pull. This is not a metaphor. Maybe.',
+  'You will be haunted by one tab you never close. Close it. Free the spirit.',
+  'Three people will think of you today. Two fondly. One owes you money.',
+  'Wear the thing you keep saving for an occasion. The occasion is Thursday.',
+  'An old song will find you in a shop. Pretend you are not moved.',
+  'The spreadsheet knows what you did. It does not care.',
+  'You will nap. It will be legendary. Nobody will witness it.',
+  'Auntie predicts: coffee, then clarity, then a nap, then mild destiny.',
+  'A plant is judging you. Water it and win its silence.',
+  'You will nearly send a message to the wrong person. Nearly. Breathe.',
+  'Your luck is average. Average is the richest soil. Plant something.',
+  'The crow outside has opinions about your schedule. The crow is right.',
+  'Do not buy the second one. You already have the first one in a drawer.',
+  'Somebody will compliment you and you will deflect it like a tiny ninja. Let it land.',
+  'The weather in your head is clearing. Bring a jacket anyway.',
+  'Tonight you will remember a comeback from 2019. It is still good.',
+  'A long story is coming. Nod at the right places. Snack between.',
+  'Auntie saw your to-do list. She laughed, then she cried, then she added "rest".',
+  'The ghost in your hallway only wants the light left on. Leave it on.',
+  'You will say "one more episode." The lantern will not judge you. Auntie will, lovingly.',
+  'An umbrella you lent will never return. Let it go. It has a new life now.',
+  'Someone is proud of you and too awkward to say it. Receive it anyway.',
+ ],
+ profound:[
+  'The river does not hurry, and it still arrives. You are allowed to be a river.',
+  'What you water grows. Check what you have been watering.',
+  'Most doors are not locked. Most people never touch the handle.',
+  'Grief is love with nowhere to go. Give it a small task: tend one living thing.',
+  'You cannot think your way out of a feeling. Walk it out instead.',
+  'The quiet one in the room is not empty. Ask.',
+  'Fear of the ending spoils the middle. The middle is where the tea is.',
+  'Say the kind thing now. Mouths close. Ears close sooner.',
+  'A good village is built one lantern at a time, by people who could not see the whole street.',
+  'You are not behind. You are on a different road, and it also goes somewhere.',
+  'Let the old plan die honorably. Give it a lantern. Then make the new one.',
+  'What they said about you is a weather report from their own sky.',
+  'Rest is not the reward for finishing. It is the ground you finish on.',
+  'If you must choose between being right and being warm, choose warm. Right will keep.',
+  'Everything you own will one day belong to someone else. Hold lightly, give freely.',
+  'Many things are urgent. Few are important. The rain knows the difference.',
+  'The thing you are avoiding is smaller than the shadow it casts in your mind.',
+  'You will be someone\'s ancestor. Behave like it.',
+  'Courage is mostly going anyway with wet feet.',
+  'Tell the truth sooner. It costs less in the morning.',
+  'Forgiveness is not a gift to them. It is you setting down a bag you were never paid to carry.',
+  'The mountain was not built in a day, but it was also never in a hurry to be a mountain.',
+  'What you cannot change, you can still accompany.',
+  'A small promise kept is worth ten grand ones spoken.',
+  'You are allowed to outgrow a version of yourself that other people liked.',
+ ],
+ solemn:[
+  'Someone you love is tired in a way they have not said aloud. Sit with them. Ask nothing.',
+  'There is a conversation you keep postponing. The person on the other side is also postponing it. One of you must be brave.',
+  'You have been strong for a long time. Strength that never rests becomes a wall. Open a window tonight.',
+  'A chapter is ending. Do not pretend it is not. Thank it, then turn the page with both hands.',
+  'What you are grieving was real. You do not have to earn the right to miss it.',
+  'Your body has been sending letters. Read one today.',
+  'Not everything that leaves you was taken. Some things completed their work.',
+  'You will be asked to forgive before you are ready. You may say: not yet. That is also an answer.',
+  'The future is kinder than the voice that narrates your nights. Do not let it be the only speaker.',
+  'When the rain stops, go outside. Not to do anything. Just to be counted among the living.',
+ ],
+};
+const YTH={x:0,y:0,nap:false,hover:false,bob:0};
+const DAYKEY='yth-fortune-day';
+function placeYuki(){YTH.x=Math.min(W*.3,tree.x+tree.th*.42);YTH.y=H*.78+8*k;YTH.nap=Math.random()<1/12;}
+function drawYuki(nt,c,T){const {x,y}=YTH,s=k*1.05,bob=Math.sin(T*1.1)*1.2*s;YTH.bob=bob;
+  cx.save();cx.translate(x,y+bob);
+  // shadow + glow
+  cx.fillStyle='rgba(0,0,0,.3)';cx.beginPath();cx.ellipse(0,2*s,22*s,5*s,0,0,7);cx.fill();
+  const gl=cx.createRadialGradient(0,-40*s,0,0,-40*s,70*s);gl.addColorStop(0,`rgba(180,140,255,${.12+nt*.12+(YTH.hover?.1:0)})`);gl.addColorStop(1,'rgba(180,140,255,0)');cx.fillStyle=gl;cx.beginPath();cx.arc(0,-40*s,70*s,0,7);cx.fill();
+  // robe: layered black and deep violet with silver hem
+  cx.fillStyle='#120b1e';cx.beginPath();cx.moveTo(-18*s,0);cx.quadraticCurveTo(-20*s,-30*s,-10*s,-52*s);cx.lineTo(10*s,-52*s);cx.quadraticCurveTo(20*s,-30*s,18*s,0);cx.closePath();cx.fill();
+  cx.fillStyle='#2a1a48';cx.beginPath();cx.moveTo(-12*s,0);cx.quadraticCurveTo(-13*s,-30*s,-6*s,-50*s);cx.lineTo(6*s,-50*s);cx.quadraticCurveTo(13*s,-30*s,12*s,0);cx.closePath();cx.fill();
+  cx.strokeStyle='#c9c9de';cx.lineWidth=1.2*s;cx.beginPath();cx.moveTo(-17*s,-2*s);cx.quadraticCurveTo(0,4*s,17*s,-2*s);cx.stroke();cx.beginPath();cx.moveTo(0,-50*s);cx.lineTo(-4*s,-10*s);cx.stroke();
+  // sleeves, one arm raised holding the lantern familiar's string
+  cx.fillStyle='#120b1e';cx.beginPath();cx.ellipse(-16*s,-36*s,8*s,13*s,.5,0,7);cx.fill();cx.beginPath();cx.ellipse(17*s,-44*s,7*s,12*s,-.9,0,7);cx.fill();
+  // long silver hair behind head
+  cx.fillStyle='#d8d8e8';cx.beginPath();cx.moveTo(-11*s,-54*s);cx.quadraticCurveTo(-16*s,-30*s,-12*s,-6*s);cx.lineTo(-6*s,-10*s);cx.lineTo(-7*s,-50*s);cx.closePath();cx.fill();cx.beginPath();cx.moveTo(11*s,-54*s);cx.quadraticCurveTo(16*s,-30*s,12*s,-8*s);cx.lineTo(6*s,-12*s);cx.lineTo(7*s,-50*s);cx.closePath();cx.fill();
+  // head
+  cx.fillStyle='#efe9f4';cx.beginPath();cx.ellipse(0,-60*s,9*s,10*s,0,0,7);cx.fill();
+  // hair top with silver pin
+  cx.fillStyle='#e4e4f0';cx.beginPath();cx.ellipse(0,-66*s,10*s,6*s,0,Math.PI,0);cx.fill();cx.fillRect(-10*s,-66*s,20*s,3*s);
+  cx.strokeStyle='#b48cff';cx.lineWidth=1.2*s;cx.beginPath();cx.moveTo(6*s,-70*s);cx.lineTo(14*s,-74*s);cx.stroke();cx.fillStyle='#b48cff';cx.beginPath();cx.arc(14*s,-74*s,1.6*s,0,7);cx.fill();
+  // pale eyes, tiny smile
+  if(YTH.nap){cx.strokeStyle='#4a3f66';cx.lineWidth=1*s;cx.beginPath();cx.moveTo(-5*s,-60*s);cx.lineTo(-2*s,-60*s);cx.moveTo(2*s,-60*s);cx.lineTo(5*s,-60*s);cx.stroke();
+    cx.fillStyle=`rgba(220,220,240,${.5+.5*Math.sin(T*2)})`;cx.font=`${9*s}px sans-serif`;cx.fillText('z',12*s,-74*s-((T*8)%12)*s);cx.fillText('z',16*s,-82*s-((T*8+6)%12)*s);}
+  else{cx.fillStyle='#d9d0f2';cx.beginPath();cx.ellipse(-3.5*s,-60*s,1.6*s,2.1*s,0,0,7);cx.ellipse(3.5*s,-60*s,1.6*s,2.1*s,0,0,7);cx.fill();cx.fillStyle='#6a4a9a';cx.beginPath();cx.arc(-3.5*s,-59.6*s,.7*s,0,7);cx.arc(3.5*s,-59.6*s,.7*s,0,7);cx.fill();
+    cx.strokeStyle='#8a6aa0';cx.lineWidth=.8*s;cx.beginPath();cx.arc(0,-56*s,2.2*s,.2,Math.PI-.2);cx.stroke();}
+  // ghostly lantern familiar floating above her raised hand
+  const fx=24*s,fy=-66*s+Math.sin(T*2.2)*3*s;cx.strokeStyle='rgba(220,220,240,.5)';cx.lineWidth=.8;cx.beginPath();cx.moveTo(19*s,-52*s);cx.lineTo(fx,fy+6*s);cx.stroke();
+  const fg=cx.createRadialGradient(fx,fy,0,fx,fy,16*s);fg.addColorStop(0,'rgba(190,150,255,.55)');fg.addColorStop(1,'rgba(190,150,255,0)');cx.fillStyle=fg;cx.beginPath();cx.arc(fx,fy,16*s,0,7);cx.fill();
+  cx.fillStyle='rgba(220,210,245,.9)';cx.beginPath();cx.moveTo(fx-5*s,fy+6*s);cx.quadraticCurveTo(fx-7*s,fy-6*s,fx,fy-8*s);cx.quadraticCurveTo(fx+7*s,fy-6*s,fx+5*s,fy+6*s);cx.quadraticCurveTo(fx+2*s,fy+3*s,fx,fy+7*s);cx.quadraticCurveTo(fx-2*s,fy+3*s,fx-5*s,fy+6*s);cx.fill();
+  cx.fillStyle='#2a1a48';cx.beginPath();cx.arc(fx-2*s,fy-1*s,.9*s,0,7);cx.arc(fx+2*s,fy-1*s,.9*s,0,7);cx.fill();
+  // little sign at her feet
+  cx.fillStyle='#1f1d28';cx.fillRect(-34*s,-14*s,16*s,11*s);cx.strokeStyle='#9a9ab0';cx.lineWidth=.8;cx.strokeRect(-34*s,-14*s,16*s,11*s);cx.fillRect(-27*s,-3*s,2*s,4*s);
+  cx.fillStyle='#b48cff';cx.font=`700 ${5*s}px sans-serif`;cx.textAlign='center';cx.fillText('FATE',-26*s,-6.5*s);cx.textAlign='start';
+  cx.restore();}
+function yukiAt(px,py){return Math.abs(px-YTH.x)<30*k&&py<YTH.y&&py>YTH.y-90*k;}
+// talisman overlay
+const fov=document.createElement('div');fov.className='ov';fov.id='fov';fov.hidden=true;fov.setAttribute('role','dialog');fov.setAttribute('aria-modal','true');fov.setAttribute('aria-label','Fortune from Yuki Tao Hu');
+fov.innerHTML=`<div class="pane fpane"><button class="x" id="fovX" aria-label="Close">✕</button><h2>Yuki Tao Hu</h2><p class="sub" id="fsub">Twelve thousand years old. Looks about twenty-one. Do not ask how.</p><div class="scroll-wrap"><div class="tal" id="tal"><div class="tal-ink"><b id="ftier"></b><p id="ftext"></p><i id="fsig"></i></div></div></div><p class="fnote" id="fnote"></p><div class="fbtns"><a id="fsave" class="fbtn" download="yuki-tao-hu-fortune.png" hidden>Save this fortune</a></div></div>`;
+document.body.appendChild(fov);
+const fst=document.createElement('style');fst.textContent=`.fpane{text-align:center;max-width:560px}.scroll-wrap{display:flex;justify-content:center;perspective:800px;margin:6px 0 10px}.tal{position:relative;width:min(300px,100%);background:linear-gradient(180deg,#efe9f4,#d8d8e8);color:#120b1e;border:2px solid #9a9ab0;box-shadow:0 0 0 4px #0b0a12,0 0 0 5px #6a4a9a;padding:22px 20px 26px;transform-origin:top;animation:unroll 1.1s cubic-bezier(.2,.8,.2,1) both}.tal::before,.tal::after{content:"";position:absolute;left:10px;right:10px;height:6px;background:#6a4a9a;border-radius:3px}.tal::before{top:6px}.tal::after{bottom:6px}.tal-ink b{display:block;font:800 13px "Zen Kaku Gothic New",sans-serif;letter-spacing:.12em;color:#6a4a9a;margin-bottom:10px}.tal-ink p{font:600 clamp(17px,2.6vw,21px)/1.45 "Shippori Mincho B1",Georgia,serif;margin:0 0 14px;color:#120b1e}.tal-ink i{font-size:13px;color:#4a3f66}.tal.burn{animation:burn 2.2s ease-in forwards}.tal.nap{background:linear-gradient(180deg,#1f1d28,#141220);color:var(--soft);border-color:#4a3f66}.tal.nap .tal-ink p{color:var(--ink)}.tal.nap .tal-ink b{color:var(--ember)}@keyframes unroll{from{transform:rotateX(-90deg) scaleY(.2);opacity:0}to{transform:none;opacity:1}}@keyframes burn{0%{filter:none;clip-path:inset(0 0 0 0)}40%{filter:sepia(1) hue-rotate(230deg) saturate(2)}100%{filter:sepia(1) hue-rotate(230deg) saturate(3) brightness(.3);clip-path:inset(0 0 100% 0);opacity:0}}.fnote{font-size:13px;color:var(--soft);min-height:1.2em;margin:0 0 10px}.fbtns{display:flex;gap:8px;justify-content:center}.fbtn{display:inline-block;border:1px solid var(--ember);color:var(--ember);padding:10px 16px;font-weight:700;text-decoration:none}@media(prefers-reduced-motion:reduce){.tal,.tal.burn{animation:none}}`;
+document.head.appendChild(fst);
+const tal=document.getElementById('tal'),ftier=document.getElementById('ftier'),ftext=document.getElementById('ftext'),fsig=document.getElementById('fsig'),fnote=document.getElementById('fnote'),fsave=document.getElementById('fsave');
+document.getElementById('fovX').addEventListener('click',()=>fov.hidden=true);fov.addEventListener('click',e=>{if(e.target===fov)fov.hidden=true;});
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`}
+function fortuneCard(tier,text){const c=document.createElement('canvas');c.width=900;c.height=1200;const g=c.getContext('2d');
+  g.fillStyle='#0b0a12';g.fillRect(0,0,900,1200);const gr=g.createRadialGradient(450,420,0,450,420,600);gr.addColorStop(0,'rgba(120,80,200,.35)');gr.addColorStop(1,'rgba(120,80,200,0)');g.fillStyle=gr;g.fillRect(0,0,900,1200);
+  g.strokeStyle='#9a9ab0';g.lineWidth=3;g.strokeRect(40,40,820,1120);g.strokeStyle='#6a4a9a';g.lineWidth=1.5;g.strokeRect(56,56,788,1088);
+  g.fillStyle='#efe9f4';g.fillRect(120,220,660,760);g.fillStyle='#6a4a9a';g.fillRect(140,236,620,10);g.fillRect(140,954,620,10);
+  g.fillStyle='#b48cff';g.font='700 26px sans-serif';g.textAlign='center';g.fillText('YUKI TAO HU · FORTUNE',450,140);g.fillStyle='#9a9ab0';g.font='20px sans-serif';g.fillText('lotusclan2026',450,180);
+  g.fillStyle='#6a4a9a';g.font='700 24px sans-serif';g.fillText(tier.toUpperCase(),450,300);
+  g.fillStyle='#120b1e';g.font='600 40px Georgia,serif';const words=text.split(' ');let line='',y=380;const lines=[];for(const w of words){const t=line?line+' '+w:w;if(g.measureText(t).width>580){lines.push(line);line=w;}else line=t;}lines.push(line);
+  for(const l of lines){g.fillText(l,450,y);y+=56;}
+  g.fillStyle='#4a3f66';g.font='italic 24px Georgia,serif';g.fillText('— Auntie Yuki, 12,000 and counting',450,920);
+  g.fillStyle='#9a9ab0';g.font='20px sans-serif';g.fillText('one fortune per soul per day',450,1080);
+  return c.toDataURL('image/png');}
+function tellFortune(){fov.hidden=true;tal.classList.remove('burn','nap');fsave.hidden=true;fnote.textContent='';
+  if(YTH.nap){tal.classList.add('nap');ftier.textContent='DO NOT DISTURB';ftext.textContent='Auntie is napping. Twelve thousand years is a lot of years. Come back later.';fsig.textContent='zzz';fov.hidden=false;return;}
+  let used=null;try{used=localStorage.getItem(DAYKEY)}catch(e){}
+  if(used&&used.split('|')[0]===todayKey()){const [,tier,text]=used.split('|');ftier.textContent=tier.toUpperCase()+' · TODAY’S';ftext.textContent=text;fsig.textContent='— Auntie Yuki';fnote.textContent='One fortune per soul per day. This one is still yours.';fsave.href=fortuneCard(tier,text);fsave.hidden=false;fov.hidden=false;return;}
+  const r=Math.random();const tier=r<.08?'solemn':r<.45?'profound':'cheeky';const text=pick(FORTUNES[tier]);
+  try{localStorage.setItem(DAYKEY,`${todayKey()}|${tier}|${text}`)}catch(e){}
+  ftier.textContent=tier==='solemn'?'A SOLEMN ONE':tier==='profound'?'A PROFOUND ONE':'A CHEEKY ONE';ftext.textContent=text;fsig.textContent='— Auntie Yuki';
+  if(tier==='solemn'){fnote.textContent='The lanterns dim. Auntie is not joking this time.';if(S.mode.wx==='auto'){S.phase='rain';S.target=.75;S.next=45;}if(musGain)musGain.gain.setTargetAtTime(musOn?.2:0,ac.currentTime,2);}
+  else fnote.textContent='Read it before it burns.';
+  fsave.href=fortuneCard(tier,text);fsave.hidden=false;fov.hidden=false;
+  const seq=setTimeout(()=>{if(!fov.hidden){tal.classList.add('burn');fnote.textContent='Gone to violet smoke. Saved above if you were quick.';}},tier==='solemn'?14000:9000);
+  fov.addEventListener('transitionend',()=>clearTimeout(seq),{once:true});}
+
 function build(){
   const DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0);
   k=cl(Math.min(W/1100,H/760),.55,1.4);seed=11;
@@ -132,6 +517,8 @@ function build(){
   for(let i=0;i<9;i++)clouds.push({x:rnd()*W*1.4-W*.2,y:H*(.05+rnd()*.26),s:(.6+rnd()*.9)*k,v:.4+rnd()*.8,storm:i>3});
   for(let i=0;i<6;i++)mist.push({x:rnd()*W,y:H*(.6+rnd()*.3),w:(220+rnd()*260)*k,v:(rnd()-.5)*16});
   wisps=Array.from({length:16},()=>({x:rnd()*W,y:H*(.62+rnd()*.3),p:rnd()*6}));
+  const gap=x=>x<W*.3||(x>W*.36&&x<W*.64);towers=towers.filter(o=>!gap(o.x));trees=trees.filter(t=>!gap(t.x));stones=stones.filter(l=>!(l.x>W*.36&&l.x<W*.64));
+  buildExtras();placeYuki();
 }
 addEventListener('resize',build);build();
 
@@ -205,6 +592,7 @@ function frame(now){
   // front ground
   const gy=H*.78;cx.fillStyle=shade('#1c1a24');cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W+10;x+=10)cx.lineTo(x,gy+Math.sin(x*.003)*6*k);cx.lineTo(W,H);cx.fill();
   cx.fillStyle=shade(S.wet>.3?'#2a2834':'#4a4858');cx.beginPath();cx.moveTo(0,H*.85);cx.bezierCurveTo(W*.3,H*.82,W*.6,H*.9,W,H*.86);cx.lineTo(W,H*.91);cx.bezierCurveTo(W*.6,H*.96,W*.3,H*.87,0,H*.91);cx.fill();
+  drawTree(nt,c,T,dt);
   for(const p of puddles){const pw=p.w*(.2+S.wet*.8);if(S.wet<.05)continue;cx.fillStyle=css(mix(bot,top,.4),.3+S.wet*.4);cx.beginPath();cx.ellipse(p.x,p.y,pw,pw*.22,0,0,7);cx.fill();
     if(nt>.3){cx.fillStyle=css(P.jade,.08*nt*S.wet);cx.beginPath();cx.ellipse(p.x,p.y,pw*.6,pw*.1,0,0,7);cx.fill();}
     if(S.rain>.1&&Math.random()<S.rain*dt*6)ripples.push({x:p.x+(Math.random()-.5)*pw*1.4,y:p.y+(Math.random()-.5)*pw*.25,r:1,a:.7});}
@@ -213,6 +601,7 @@ function frame(now){
   cx.strokeStyle=shade('#09080d',.5);cx.lineCap='round';
   for(const t of trees){const sw=Math.sin(T*1.1+t.ph)*S.wind*.05*(RM?0:1);seed=t.seed;branch(t.x,t.y,t.h*.38,-Math.PI/2+(rnd()-.5)*.3,6,sw);}
   seed=Math.floor(T*1000)%2147483646+1;
+  drawSquare(nt,c,T,dt,top,bot);drawYuki(nt,c,T);
   // front towers
   for(const o of towers){cx.fillStyle='rgba(0,0,0,.25)';cx.beginPath();cx.ellipse(o.x+8*k,o.y+2*k,o.w*.7,6*k,0,0,7);cx.fill();lit+=tower(o,nt,c,T,true);}
   smoke=smoke.filter(s=>{s.x+=S.wind*16*dt;s.y-=12*dt;s.r+=5*dt;s.a-=dt*.1;if(s.a<=0)return false;cx.fillStyle=css(mix([200,190,215],[70,60,95],nt),s.a);cx.beginPath();cx.arc(s.x,s.y,s.r,0,7);cx.fill();return true});
@@ -223,6 +612,7 @@ function frame(now){
   // spirit wisps at night
   const fa=nt*(1-c*.6)*.9;if(fa>.05)for(const f of wisps){f.p+=dt*(RM?.2:1);const fx=f.x+Math.sin(f.p*.6)*26,fy=f.y+Math.cos(f.p*.8)*12-Math.sin(f.p*.3)*10;
     cx.fillStyle=css(P.jade,fa*.18);cx.beginPath();cx.arc(fx,fy,7*k,0,7);cx.fill();cx.fillStyle=css([235,230,255],fa*(.4+.6*Math.abs(Math.sin(f.p*1.7))));cx.beginPath();cx.arc(fx,fy,2*k,0,7);cx.fill();}
+  drawFloating(nt,c,T,dt);
   // rain
   const want=Math.round(S.rain*W*(RM?.25:.75));while(drops.length<want)drops.push({x:Math.random()*W*1.2-W*.1,y:Math.random()*-H,v:600+Math.random()*400,l:10+Math.random()*12});if(drops.length>want)drops.length=want;
   const slant=S.wind*.35;cx.strokeStyle=css(mix([150,160,200],[215,220,240],day),.5);cx.lineWidth=1.1;cx.beginPath();
