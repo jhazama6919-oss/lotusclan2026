@@ -110,7 +110,7 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
 
 <div class="plate">
   <h1>lotusclan2026</h1>
-  <p>Black stone, silver mist, violet light. Click a tower, ask the fortune teller, light a lantern.</p>
+  <p>Blackmount, under violet thunder. Click a tower, ask the fortune teller, light a lantern.</p>
   <div class="stats"><span id="wx">Clear skies</span><span id="clock">9:00 am</span><span>Lanterns <b id="lit">0</b></span></div>
 </div>
 
@@ -150,7 +150,7 @@ button[aria-pressed=true]{background:var(--jade);color:#0b0a12}
   <div class="pane">
     <button class="x" id="shrX" aria-label="Close shrine">✕</button>
     <h2 id="shrH">Shrine of the Clan Consultant</h2>
-    <p class="sub">Keeper of the village, drawer of comics, bringer of rain.</p>
+    <p class="sub">Keeper of this corner of Blackmount, drawer of comics, bringer of rain.</p>
     <div class="shrine">
       <svg viewBox="0 0 180 240" aria-hidden="true">
         <defs><radialGradient id="sg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#b48cff" stop-opacity=".55"/><stop offset="1" stop-color="#b48cff" stop-opacity="0"/></radialGradient></defs>
@@ -211,7 +211,7 @@ const P={dayTop:hex('#6f6a8c'),dayBot:hex('#cfc8dc'),duskTop:hex('#2a1a4e'),dusk
 const WALLS=['#2a2434','#1f1d28','#3a2e4e','#262630','#312a3e'].map(hex),ROOFS=['#0f0c16','#141220','#1a1024','#0c0b12','#201a2c'].map(hex);
 
 const S={t:.38,rain:0,target:0,cloud:0,wet:0,wind:.3,flash:0,bolt:null,mode:{wx:'auto',tm:'auto'},next:18,phase:'clear'};
-let drops=[],splashes=[],ripples=[],smoke=[];
+let drops=[],splashes=[],ripples=[],smoke=[],cliffs=[],falls=[],keep=[],petals=[];
 
 // ===== Forbidden Tree, town square, gallery towers, shrine, visitor lanterns =====
 const GALLERIES=[
@@ -390,6 +390,9 @@ const FORTUNES={
   'You will say "one more episode." The lantern will not judge you. Auntie will, lovingly.',
   'An umbrella you lent will never return. Let it go. It has a new life now.',
   'Someone is proud of you and too awkward to say it. Receive it anyway.',
+  'Zo. That is Lúrén for “go.” Auntie means the dishes.',
+  'Czenzhurua: absolute silence. Try it for ten minutes. Report back. Quietly.',
+  'A talisman on a hat is just a sticky note the storm respects. Write yours.',
  ],
  profound:[
   'The river does not hurry, and it still arrives. You are allowed to be a river.',
@@ -417,6 +420,9 @@ const FORTUNES={
   'What you cannot change, you can still accompany.',
   'A small promise kept is worth ten grand ones spoken.',
   'You are allowed to outgrow a version of yourself that other people liked.',
+  'Zhaemura is the homeland you carry, not the one you left. Unpack it somewhere kind.',
+  'Ryoki zenkai: full permission. Auntie grants it. Now grant it to yourself.',
+  'The lotus does not merely bloom. It cuts. Be gentle, and keep your edge.',
  ],
  solemn:[
   'Someone you love is tired in a way they have not said aloud. Sit with them. Ask nothing.',
@@ -429,49 +435,59 @@ const FORTUNES={
   'You will be asked to forgive before you are ready. You may say: not yet. That is also an answer.',
   'The future is kinder than the voice that narrates your nights. Do not let it be the only speaker.',
   'When the rain stops, go outside. Not to do anything. Just to be counted among the living.',
+  'The storm does not rage for destruction. It rages to cleanse, to reveal, and to renew. Stand in it until you know which of the three it is doing to you.',
  ],
 };
 const YTH={x:0,y:0,nap:false,hover:false,bob:0};
 const DAYKEY='yth-fortune-day';
 function placeYuki(){YTH.x=Math.min(W*.3,tree.x+tree.th*.42);YTH.y=H*.78+8*k;YTH.nap=Math.random()<1/12;}
-function drawYuki(nt,c,T){const {x,y}=YTH,s=k*1.05,bob=Math.sin(T*1.1)*1.2*s;YTH.bob=bob;
-  cx.save();cx.translate(x,y+bob);
-  // shadow + glow
-  cx.fillStyle='rgba(0,0,0,.3)';cx.beginPath();cx.ellipse(0,2*s,22*s,5*s,0,0,7);cx.fill();
-  const gl=cx.createRadialGradient(0,-40*s,0,0,-40*s,70*s);gl.addColorStop(0,`rgba(180,140,255,${.12+nt*.12+(YTH.hover?.1:0)})`);gl.addColorStop(1,'rgba(180,140,255,0)');cx.fillStyle=gl;cx.beginPath();cx.arc(0,-40*s,70*s,0,7);cx.fill();
-  // robe: layered black and deep violet with silver hem
-  cx.fillStyle='#120b1e';cx.beginPath();cx.moveTo(-18*s,0);cx.quadraticCurveTo(-20*s,-30*s,-10*s,-52*s);cx.lineTo(10*s,-52*s);cx.quadraticCurveTo(20*s,-30*s,18*s,0);cx.closePath();cx.fill();
-  cx.fillStyle='#2a1a48';cx.beginPath();cx.moveTo(-12*s,0);cx.quadraticCurveTo(-13*s,-30*s,-6*s,-50*s);cx.lineTo(6*s,-50*s);cx.quadraticCurveTo(13*s,-30*s,12*s,0);cx.closePath();cx.fill();
-  cx.strokeStyle='#c9c9de';cx.lineWidth=1.2*s;cx.beginPath();cx.moveTo(-17*s,-2*s);cx.quadraticCurveTo(0,4*s,17*s,-2*s);cx.stroke();cx.beginPath();cx.moveTo(0,-50*s);cx.lineTo(-4*s,-10*s);cx.stroke();
-  // sleeves, one arm raised holding the lantern familiar's string
-  cx.fillStyle='#120b1e';cx.beginPath();cx.ellipse(-16*s,-36*s,8*s,13*s,.5,0,7);cx.fill();cx.beginPath();cx.ellipse(17*s,-44*s,7*s,12*s,-.9,0,7);cx.fill();
-  // long silver hair behind head
-  cx.fillStyle='#d8d8e8';cx.beginPath();cx.moveTo(-11*s,-54*s);cx.quadraticCurveTo(-16*s,-30*s,-12*s,-6*s);cx.lineTo(-6*s,-10*s);cx.lineTo(-7*s,-50*s);cx.closePath();cx.fill();cx.beginPath();cx.moveTo(11*s,-54*s);cx.quadraticCurveTo(16*s,-30*s,12*s,-8*s);cx.lineTo(6*s,-12*s);cx.lineTo(7*s,-50*s);cx.closePath();cx.fill();
-  // head
-  cx.fillStyle='#efe9f4';cx.beginPath();cx.ellipse(0,-60*s,9*s,10*s,0,0,7);cx.fill();
-  // hair top with silver pin
-  cx.fillStyle='#e4e4f0';cx.beginPath();cx.ellipse(0,-66*s,10*s,6*s,0,Math.PI,0);cx.fill();cx.fillRect(-10*s,-66*s,20*s,3*s);
-  cx.strokeStyle='#b48cff';cx.lineWidth=1.2*s;cx.beginPath();cx.moveTo(6*s,-70*s);cx.lineTo(14*s,-74*s);cx.stroke();cx.fillStyle='#b48cff';cx.beginPath();cx.arc(14*s,-74*s,1.6*s,0,7);cx.fill();
-  // pale eyes, tiny smile
-  if(YTH.nap){cx.strokeStyle='#4a3f66';cx.lineWidth=1*s;cx.beginPath();cx.moveTo(-5*s,-60*s);cx.lineTo(-2*s,-60*s);cx.moveTo(2*s,-60*s);cx.lineTo(5*s,-60*s);cx.stroke();
-    cx.fillStyle=`rgba(220,220,240,${.5+.5*Math.sin(T*2)})`;cx.font=`${9*s}px sans-serif`;cx.fillText('z',12*s,-74*s-((T*8)%12)*s);cx.fillText('z',16*s,-82*s-((T*8+6)%12)*s);}
-  else{cx.fillStyle='#d9d0f2';cx.beginPath();cx.ellipse(-3.5*s,-60*s,1.6*s,2.1*s,0,0,7);cx.ellipse(3.5*s,-60*s,1.6*s,2.1*s,0,0,7);cx.fill();cx.fillStyle='#6a4a9a';cx.beginPath();cx.arc(-3.5*s,-59.6*s,.7*s,0,7);cx.arc(3.5*s,-59.6*s,.7*s,0,7);cx.fill();
-    cx.strokeStyle='#8a6aa0';cx.lineWidth=.8*s;cx.beginPath();cx.arc(0,-56*s,2.2*s,.2,Math.PI-.2);cx.stroke();}
-  // ghostly lantern familiar floating above her raised hand
-  const fx=24*s,fy=-66*s+Math.sin(T*2.2)*3*s;cx.strokeStyle='rgba(220,220,240,.5)';cx.lineWidth=.8;cx.beginPath();cx.moveTo(19*s,-52*s);cx.lineTo(fx,fy+6*s);cx.stroke();
-  const fg=cx.createRadialGradient(fx,fy,0,fx,fy,16*s);fg.addColorStop(0,'rgba(190,150,255,.55)');fg.addColorStop(1,'rgba(190,150,255,0)');cx.fillStyle=fg;cx.beginPath();cx.arc(fx,fy,16*s,0,7);cx.fill();
-  cx.fillStyle='rgba(220,210,245,.9)';cx.beginPath();cx.moveTo(fx-5*s,fy+6*s);cx.quadraticCurveTo(fx-7*s,fy-6*s,fx,fy-8*s);cx.quadraticCurveTo(fx+7*s,fy-6*s,fx+5*s,fy+6*s);cx.quadraticCurveTo(fx+2*s,fy+3*s,fx,fy+7*s);cx.quadraticCurveTo(fx-2*s,fy+3*s,fx-5*s,fy+6*s);cx.fill();
-  cx.fillStyle='#2a1a48';cx.beginPath();cx.arc(fx-2*s,fy-1*s,.9*s,0,7);cx.arc(fx+2*s,fy-1*s,.9*s,0,7);cx.fill();
+function drawYuki(nt,c,T){const {x,y}=YTH,s=k*1.05,bob=(RM?0:Math.sin(T*1.1)*3*s)-7*s;YTH.bob=bob;const sway=RM?0:Math.sin(T*1.5)*S.wind;
+  cx.save();cx.translate(x,y);
+  // the lotus circle she floats over
+  const pulse=.6+.4*Math.sin(T*2.4);cx.save();cx.scale(1,.32);cx.strokeStyle=`rgba(190,140,255,${.35+pulse*.35})`;cx.lineWidth=1.6*s;cx.beginPath();cx.arc(0,0,26*s,0,7);cx.stroke();cx.lineWidth=.8*s;cx.beginPath();cx.arc(0,0,19*s,0,7);cx.stroke();cx.rotate(T*.4);for(let i=0;i<8;i++){cx.rotate(Math.PI/4);cx.fillStyle=`rgba(200,170,255,${.3+pulse*.3})`;cx.beginPath();cx.ellipse(0,-14*s,3*s,7*s,0,0,7);cx.fill();}cx.restore();
+  const cg=cx.createRadialGradient(0,0,0,0,0,30*s);cg.addColorStop(0,`rgba(180,130,255,${.35+pulse*.15})`);cg.addColorStop(1,'rgba(180,130,255,0)');cx.fillStyle=cg;cx.beginPath();cx.ellipse(0,0,30*s,10*s,0,0,7);cx.fill();
+  cx.translate(0,bob);
+  const gl=cx.createRadialGradient(0,-46*s,0,0,-46*s,76*s);gl.addColorStop(0,`rgba(180,140,255,${.12+nt*.12+(YTH.hover?.1:0)})`);gl.addColorStop(1,'rgba(180,140,255,0)');cx.fillStyle=gl;cx.beginPath();cx.arc(0,-46*s,76*s,0,7);cx.fill();
+  // long silver hair behind the body, down to the waist, lifting in the wind
+  cx.fillStyle='#d4d4e6';cx.beginPath();cx.moveTo(-8*s,-74*s);cx.quadraticCurveTo(-17*s,-50*s,-14*s-sway*6*s,-22*s);cx.quadraticCurveTo(-9*s,-18*s,-5*s,-30*s);cx.lineTo(-5*s,-66*s);cx.closePath();cx.fill();
+  cx.beginPath();cx.moveTo(8*s,-74*s);cx.quadraticCurveTo(17*s,-50*s,13*s-sway*6*s,-24*s);cx.quadraticCurveTo(8*s,-20*s,5*s,-32*s);cx.lineTo(5*s,-66*s);cx.closePath();cx.fill();
+  // robe: slim layered black over deep violet, silver lotus filigree at the hem, flaring sleeves
+  cx.fillStyle='#120b1e';cx.beginPath();cx.moveTo(-15*s,0);cx.quadraticCurveTo(-13*s,-32*s,-7*s,-60*s);cx.lineTo(7*s,-60*s);cx.quadraticCurveTo(13*s,-32*s,15*s,0);cx.closePath();cx.fill();
+  cx.fillStyle='#2a1a48';cx.beginPath();cx.moveTo(-9*s,0);cx.quadraticCurveTo(-8*s,-30*s,-4*s,-58*s);cx.lineTo(4*s,-58*s);cx.quadraticCurveTo(8*s,-30*s,9*s,0);cx.closePath();cx.fill();
+  cx.strokeStyle='#c9c9de';cx.lineWidth=1*s;cx.beginPath();cx.moveTo(-14*s,-2*s);cx.quadraticCurveTo(0,3*s,14*s,-2*s);cx.stroke();cx.beginPath();cx.moveTo(0,-58*s);cx.lineTo(-3*s,-12*s);cx.stroke();
+  cx.fillStyle='#b48cff';cx.fillRect(-7*s,-44*s,14*s,2.4*s);lotus(0,-8*s,4*s,[200,190,230],.9);
+  cx.fillStyle='#120b1e';cx.beginPath();cx.ellipse(-14*s,-40*s,6.5*s,14*s,.35,0,7);cx.fill();cx.beginPath();cx.ellipse(15*s,-54*s,6*s,13*s,-1.1,0,7);cx.fill();
+  cx.fillStyle='#efe9f4';cx.beginPath();cx.ellipse(21*s,-63*s,2*s,2.6*s,-.6,0,7);cx.fill();
+  // slender neck and smaller head
+  cx.fillStyle='#efe9f4';cx.fillRect(-1.6*s,-66*s,3.2*s,6*s);cx.beginPath();cx.ellipse(0,-70*s,7.5*s,8.6*s,0,0,7);cx.fill();
+  cx.fillStyle='#e4e4f0';cx.beginPath();cx.moveTo(-7.5*s,-70*s);cx.quadraticCurveTo(-8*s,-80*s,0,-80*s);cx.quadraticCurveTo(8*s,-80*s,7.5*s,-70*s);cx.lineTo(5*s,-72*s);cx.quadraticCurveTo(2*s,-75*s,-3*s,-71*s);cx.closePath();cx.fill();
+  // flat-topped black cap with a silver lotus and two hanging paper talismans
+  cx.fillStyle='#0b0a12';cx.beginPath();cx.moveTo(-9*s,-77*s);cx.lineTo(-8*s,-86*s);cx.lineTo(8*s,-86*s);cx.lineTo(9*s,-77*s);cx.closePath();cx.fill();cx.fillStyle='#1f1d28';cx.fillRect(-9.5*s,-78.5*s,19*s,2.2*s);lotus(0,-81*s,2.6*s,[220,215,240],.95);
+  for(const [sx,ph] of [[-8.5,0],[8.5,1.3]]){const tx=sx*s+Math.sin(T*2+ph)*sway*3*s;cx.fillStyle='#e8e2ea';cx.beginPath();cx.moveTo(sx*s-1.8*s,-78*s);cx.lineTo(sx*s+1.8*s,-78*s);cx.lineTo(tx+1.8*s,-66*s);cx.lineTo(tx-1.8*s,-66*s);cx.closePath();cx.fill();cx.fillStyle='#6a4a9a';cx.fillRect(tx-.5*s,-76*s,1*s,7*s);}
+  // pale lavender eyes, a sly smile
+  if(YTH.nap){cx.strokeStyle='#4a3f66';cx.lineWidth=1*s;cx.beginPath();cx.moveTo(-4.5*s,-70*s);cx.lineTo(-1.5*s,-70*s);cx.moveTo(1.5*s,-70*s);cx.lineTo(4.5*s,-70*s);cx.stroke();
+    cx.fillStyle=`rgba(220,220,240,${.5+.5*Math.sin(T*2)})`;cx.font=`${9*s}px sans-serif`;cx.fillText('z',11*s,-86*s-((T*8)%12)*s);cx.fillText('z',15*s,-94*s-((T*8+6)%12)*s);}
+  else{cx.fillStyle='#d9d0f2';cx.beginPath();cx.ellipse(-3*s,-70*s,1.5*s,2*s,0,0,7);cx.ellipse(3*s,-70*s,1.5*s,2*s,0,0,7);cx.fill();cx.fillStyle='#8a6ad0';cx.beginPath();cx.arc(-3*s,-69.6*s,.7*s,0,7);cx.arc(3*s,-69.6*s,.7*s,0,7);cx.fill();
+    cx.strokeStyle='#8a6aa0';cx.lineWidth=.8*s;cx.beginPath();cx.arc(.5*s,-66.5*s,2*s,.15,Math.PI-.5);cx.stroke();}
+  // a talisman burning with violet fire in her raised hand
+  const tx=23*s,ty=-72*s;cx.save();cx.translate(tx,ty);cx.rotate(-.25);cx.fillStyle='#efe6ee';cx.fillRect(-2.2*s,-7*s,4.4*s,11*s);cx.fillStyle='#6a4a9a';cx.fillRect(-.5*s,-5*s,1*s,6*s);cx.restore();
+  if(!YTH.nap){for(let i=0;i<3;i++){const fl=Math.sin(T*9+i*2.1)*.5+.5;const fg=cx.createRadialGradient(tx,ty-8*s-fl*4*s,0,tx,ty-8*s,9*s);fg.addColorStop(0,`rgba(230,200,255,${.55-i*.12})`);fg.addColorStop(.5,`rgba(170,110,255,${.35-i*.1})`);fg.addColorStop(1,'rgba(150,90,255,0)');cx.fillStyle=fg;cx.beginPath();cx.ellipse(tx+Math.sin(T*7+i)*1.5*s,ty-8*s-fl*3*s,4*s+i*s,8*s+fl*4*s,0,0,7);cx.fill();}}
+  // lantern spirit: a paper lantern with a lotus glyph, drifting beside her, trailing wisps
+  const fx=-26*s+Math.sin(T*.9)*3*s,fy=-78*s+Math.sin(T*2.2)*4*s;
+  const fg=cx.createRadialGradient(fx,fy,0,fx,fy,20*s);fg.addColorStop(0,'rgba(190,150,255,.5)');fg.addColorStop(1,'rgba(190,150,255,0)');cx.fillStyle=fg;cx.beginPath();cx.arc(fx,fy,20*s,0,7);cx.fill();
+  for(let i=0;i<4;i++){const wa=T*1.6+i*1.6,wr=10*s+i*2*s;cx.fillStyle=`rgba(200,170,255,${.22-i*.04})`;cx.beginPath();cx.arc(fx+Math.cos(wa)*wr,fy+Math.sin(wa*1.3)*wr*.6+6*s,2.4*s,0,7);cx.fill();}
+  cx.fillStyle='#1f1d28';cx.fillRect(fx-3*s,fy-10*s,6*s,2*s);cx.fillRect(fx-3*s,fy+8*s,6*s,2*s);cx.fillStyle='rgba(225,215,248,.92)';cx.beginPath();cx.moveTo(fx-3*s,fy-8*s);cx.quadraticCurveTo(fx-8*s,fy,fx-3*s,fy+8*s);cx.lineTo(fx+3*s,fy+8*s);cx.quadraticCurveTo(fx+8*s,fy,fx+3*s,fy-8*s);cx.closePath();cx.fill();
+  lotus(fx,fy+2.5*s,2.6*s,[160,110,230],.7);cx.strokeStyle='#2a1a48';cx.lineWidth=.9*s;cx.beginPath();cx.moveTo(fx-3*s,fy-3*s);cx.lineTo(fx-1.4*s,fy-1.8*s);cx.lineTo(fx-3*s,fy-.6*s);cx.moveTo(fx+3*s,fy-3*s);cx.lineTo(fx+1.4*s,fy-1.8*s);cx.lineTo(fx+3*s,fy-.6*s);cx.stroke();cx.beginPath();cx.arc(fx,fy-.4*s,1.3*s,.2,Math.PI-.2);cx.stroke();
   // little sign at her feet
-  cx.fillStyle='#1f1d28';cx.fillRect(-34*s,-14*s,16*s,11*s);cx.strokeStyle='#9a9ab0';cx.lineWidth=.8;cx.strokeRect(-34*s,-14*s,16*s,11*s);cx.fillRect(-27*s,-3*s,2*s,4*s);
-  cx.fillStyle='#b48cff';cx.font=`700 ${5*s}px sans-serif`;cx.textAlign='center';cx.fillText('FATE',-26*s,-6.5*s);cx.textAlign='start';
+  cx.fillStyle='#1f1d28';cx.fillRect(-36*s,-14*s,16*s,11*s);cx.strokeStyle='#9a9ab0';cx.lineWidth=.8;cx.strokeRect(-36*s,-14*s,16*s,11*s);cx.fillRect(-29*s,-3*s,2*s,4*s);
+  cx.fillStyle='#b48cff';cx.font=`700 ${5*s}px sans-serif`;cx.textAlign='center';cx.fillText('FATE',-28*s,-6.5*s);cx.textAlign='start';
   cx.restore();}
-function yukiAt(px,py){return Math.abs(px-YTH.x)<30*k&&py<YTH.y&&py>YTH.y-90*k;}
+function yukiAt(px,py){return Math.abs(px-YTH.x)<32*k&&py<YTH.y+6*k&&py>YTH.y-108*k;}
 // talisman overlay
 const fov=document.createElement('div');fov.className='ov';fov.id='fov';fov.hidden=true;fov.setAttribute('role','dialog');fov.setAttribute('aria-modal','true');fov.setAttribute('aria-label','Fortune from Yuki Tao Hu');
-fov.innerHTML=`<div class="pane fpane"><button class="x" id="fovX" aria-label="Close">✕</button><h2>Yuki Tao Hu</h2><p class="sub" id="fsub">Twelve thousand years old. Looks about twenty-one. Do not ask how.</p><div class="scroll-wrap"><div class="tal" id="tal"><div class="tal-ink"><b id="ftier"></b><p id="ftext"></p><i id="fsig"></i></div></div></div><p class="fnote" id="fnote"></p><div class="fbtns"><a id="fsave" class="fbtn" download="yuki-tao-hu-fortune.png" hidden>Save this fortune</a></div></div>`;
+fov.innerHTML=`<div class="pane fpane"><button class="x" id="fovX" aria-label="Close">✕</button><h2>Yuki Tao Hu</h2><p class="sub" id="fsub">Fortune teller of the Zyjin, out of KuroSan. Lotus Divination, Fate Weave, one nosy Spirit Lantern. Twelve thousand years old, looks about twenty. Do not ask how.</p><div class="scroll-wrap"><div class="tal" id="tal"><div class="tal-ink"><b id="ftier"></b><p id="ftext"></p><i id="fsig"></i></div></div></div><p class="fnote" id="fnote"></p><div class="fbtns"><button type="button" id="fplay" class="fbtn">▶ Play her theme</button><a id="fsave" class="fbtn" download="yuki-tao-hu-fortune.png" hidden>Save this fortune</a></div></div>`;
 document.body.appendChild(fov);
-const fst=document.createElement('style');fst.textContent=`.fpane{text-align:center;max-width:560px}.scroll-wrap{display:flex;justify-content:center;perspective:800px;margin:6px 0 10px}.tal{position:relative;width:min(300px,100%);background:linear-gradient(180deg,#efe9f4,#d8d8e8);color:#120b1e;border:2px solid #9a9ab0;box-shadow:0 0 0 4px #0b0a12,0 0 0 5px #6a4a9a;padding:22px 20px 26px;transform-origin:top;animation:unroll 1.1s cubic-bezier(.2,.8,.2,1) both}.tal::before,.tal::after{content:"";position:absolute;left:10px;right:10px;height:6px;background:#6a4a9a;border-radius:3px}.tal::before{top:6px}.tal::after{bottom:6px}.tal-ink b{display:block;font:800 13px "Zen Kaku Gothic New",sans-serif;letter-spacing:.12em;color:#6a4a9a;margin-bottom:10px}.tal-ink p{font:600 clamp(17px,2.6vw,21px)/1.45 "Shippori Mincho B1",Georgia,serif;margin:0 0 14px;color:#120b1e}.tal-ink i{font-size:13px;color:#4a3f66}.tal.burn{animation:burn 2.2s ease-in forwards}.tal.nap{background:linear-gradient(180deg,#1f1d28,#141220);color:var(--soft);border-color:#4a3f66}.tal.nap .tal-ink p{color:var(--ink)}.tal.nap .tal-ink b{color:var(--ember)}@keyframes unroll{from{transform:rotateX(-90deg) scaleY(.2);opacity:0}to{transform:none;opacity:1}}@keyframes burn{0%{filter:none;clip-path:inset(0 0 0 0)}40%{filter:sepia(1) hue-rotate(230deg) saturate(2)}100%{filter:sepia(1) hue-rotate(230deg) saturate(3) brightness(.3);clip-path:inset(0 0 100% 0);opacity:0}}.fnote{font-size:13px;color:var(--soft);min-height:1.2em;margin:0 0 10px}.fbtns{display:flex;gap:8px;justify-content:center}.fbtn{display:inline-block;border:1px solid var(--ember);color:var(--ember);padding:10px 16px;font-weight:700;text-decoration:none}@media(prefers-reduced-motion:reduce){.tal,.tal.burn{animation:none}}`;
+const fst=document.createElement('style');fst.textContent=`.fpane{text-align:center;max-width:560px}.scroll-wrap{display:flex;justify-content:center;perspective:800px;margin:6px 0 10px}.tal{position:relative;width:min(300px,100%);background:linear-gradient(180deg,#efe9f4,#d8d8e8);color:#120b1e;border:2px solid #9a9ab0;box-shadow:0 0 0 4px #0b0a12,0 0 0 5px #6a4a9a;padding:22px 20px 26px;transform-origin:top;animation:unroll 1.1s cubic-bezier(.2,.8,.2,1) both}.tal::before,.tal::after{content:"";position:absolute;left:10px;right:10px;height:6px;background:#6a4a9a;border-radius:3px}.tal::before{top:6px}.tal::after{bottom:6px}.tal-ink b{display:block;font:800 13px "Zen Kaku Gothic New",sans-serif;letter-spacing:.12em;color:#6a4a9a;margin-bottom:10px}.tal-ink p{font:600 clamp(17px,2.6vw,21px)/1.45 "Shippori Mincho B1",Georgia,serif;margin:0 0 14px;color:#120b1e}.tal-ink i{font-size:13px;color:#4a3f66}.tal.burn{animation:burn 2.2s ease-in forwards}.tal.nap{background:linear-gradient(180deg,#1f1d28,#141220);color:var(--soft);border-color:#4a3f66}.tal.nap .tal-ink p{color:var(--ink)}.tal.nap .tal-ink b{color:var(--ember)}@keyframes unroll{from{transform:rotateX(-90deg) scaleY(.2);opacity:0}to{transform:none;opacity:1}}@keyframes burn{0%{filter:none;clip-path:inset(0 0 0 0)}40%{filter:sepia(1) hue-rotate(230deg) saturate(2)}100%{filter:sepia(1) hue-rotate(230deg) saturate(3) brightness(.3);clip-path:inset(0 0 100% 0);opacity:0}}.fnote{font-size:13px;color:var(--soft);min-height:1.2em;margin:0 0 10px}.fbtns{display:flex;gap:8px;justify-content:center}.fbtn{display:inline-block;border:1px solid var(--ember);color:var(--ember);padding:10px 16px;font-weight:700;text-decoration:none}button.fbtn{background:none;font:inherit;font-weight:700;cursor:pointer;min-height:40px}@media(prefers-reduced-motion:reduce){.tal,.tal.burn{animation:none}}`;
 document.head.appendChild(fst);
 const tal=document.getElementById('tal'),ftier=document.getElementById('ftier'),ftext=document.getElementById('ftext'),fsig=document.getElementById('fsig'),fnote=document.getElementById('fnote'),fsave=document.getElementById('fsave');
 document.getElementById('fovX').addEventListener('click',()=>fov.hidden=true);fov.addEventListener('click',e=>{if(e.target===fov)fov.hidden=true;});
@@ -491,7 +507,7 @@ function fortuneCard(tier,text){const c=document.createElement('canvas');c.width
 function tellFortune(){fov.hidden=true;tal.classList.remove('burn','nap');fsave.hidden=true;fnote.textContent='';
   if(YTH.nap){tal.classList.add('nap');ftier.textContent='DO NOT DISTURB';ftext.textContent='Auntie is napping. Twelve thousand years is a lot of years. Come back later.';fsig.textContent='zzz';fov.hidden=false;return;}
   let used=null;try{used=localStorage.getItem(DAYKEY)}catch(e){}
-  if(used&&used.split('|')[0]===todayKey()){const [,tier,text]=used.split('|');ftier.textContent=tier.toUpperCase()+' · TODAY’S';ftext.textContent=text;fsig.textContent='— Auntie Yuki';fnote.textContent='One fortune per soul per day. This one is still yours.';fsave.href=fortuneCard(tier,text);fsave.hidden=false;fov.hidden=false;return;}
+  if(used&&used.split('|')[0]===todayKey()){const [,tier,text]=used.split('|');ftier.textContent=tier.toUpperCase()+' · TODAY’S';ftext.textContent=text;fsig.textContent='— Auntie Yuki';fnote.textContent='One fortune per soul per day. This one is still yours. Hehehe…';fsave.href=fortuneCard(tier,text);fsave.hidden=false;fov.hidden=false;return;}
   const r=Math.random();const tier=r<.08?'solemn':r<.45?'profound':'cheeky';const text=pick(FORTUNES[tier]);
   try{localStorage.setItem(DAYKEY,`${todayKey()}|${tier}|${text}`)}catch(e){}
   ftier.textContent=tier==='solemn'?'A SOLEMN ONE':tier==='profound'?'A PROFOUND ONE':'A CHEEKY ONE';ftext.textContent=text;fsig.textContent='— Auntie Yuki';
@@ -507,8 +523,8 @@ function build(){
   const gy=H*.78;towers=[];back=[];trees=[];stones=[];puddles=[];stars=[];clouds=[];mist=[];
   const n=Math.max(3,Math.round(W/(200*k)));
   for(let i=0;i<n;i++){const x=(i+.5)/n*W+(rnd()-.5)*40*k;
-    towers.push({x,y:gy+(rnd()*8-3)*k,w:(54+rnd()*30)*k,tiers:2+Math.floor(rnd()*3),th:(34+rnd()*14)*k,lean:(rnd()-.5)*.5,wall:WALLS[i%5],roof:ROOFS[(i*3+1)%5],win:Array.from({length:6},rnd),ph:rnd()*6});
-    if(i<n-1&&rnd()>.3)trees.push({x:(i+1)/n*W+(rnd()-.5)*24*k,y:gy+6*k,h:(60+rnd()*40)*k,ph:rnd()*6,seed:Math.floor(rnd()*1e6)+1});
+    towers.push({x,y:gy+(rnd()*8-3)*k,w:(54+rnd()*30)*k,tiers:2+Math.floor(rnd()*3),th:(34+rnd()*14)*k,lean:(rnd()-.5)*.5,wall:WALLS[i%5],roof:ROOFS[(i*3+1)%5],win:Array.from({length:6},rnd),ph:rnd()*6,banner:rnd()>.45});
+    if(i<n-1&&rnd()>.3)trees.push({x:(i+1)/n*W+(rnd()-.5)*24*k,y:gy+6*k,h:(60+rnd()*40)*k,ph:rnd()*6,seed:Math.floor(rnd()*1e6)+1,bloom:rnd()>.45});
     if(i%2===1)stones.push({x:(i)/n*W+30*k,y:H*.86});}
   const m=Math.max(4,Math.round(W/(120*k)));
   for(let i=0;i<m;i++)back.push({x:(i+.3+rnd()*.4)/m*W,w:(26+rnd()*16)*k,tiers:1+Math.floor(rnd()*3),th:(18+rnd()*8)*k,lean:(rnd()-.5)*.6,wall:WALLS[(i+2)%5],roof:ROOFS[i%5],win:Array.from({length:4},rnd),ph:0});
@@ -518,10 +534,40 @@ function build(){
   for(let i=0;i<6;i++)mist.push({x:rnd()*W,y:H*(.6+rnd()*.3),w:(220+rnd()*260)*k,v:(rnd()-.5)*16});
   wisps=Array.from({length:16},()=>({x:rnd()*W,y:H*(.62+rnd()*.3),p:rnd()*6}));
   const gap=x=>x<W*.3||(x>W*.36&&x<W*.64);towers=towers.filter(o=>!gap(o.x));trees=trees.filter(t=>!gap(t.x));stones=stones.filter(l=>!(l.x>W*.36&&l.x<W*.64));
-  buildExtras();placeYuki();
+  buildBlackmount();buildExtras();placeYuki();
 }
 addEventListener('resize',build);build();
 
+
+// Blackmount: black cliffs behind the village, waterfalls pouring off them, and the Great Lotus Keep on the tallest crag
+function buildBlackmount(){cliffs=[];falls=[];keep=[];petals=[];const base=H*.63;
+  const mk=(x0,x1,peak,n,plat)=>{const pts=[[x0,base]];for(let i=0;i<=n;i++){const t=i/n,x=x0+(x1-x0)*t,env=Math.sin(t*Math.PI);let y=base-(base-peak)*Math.pow(env,.4)+(rnd()-.5)*46*k*env;if(plat&&Math.abs(x-plat.x)<plat.hw)y=plat.y;pts.push([x,y]);if(!plat||Math.abs(x-plat.x)>plat.hw+20*k){const x2=x+(x1-x0)/n*.5;pts.push([x2,y+(10+rnd()*40)*k*env]);}}pts.push([x1,base]);return pts;};
+  const kx=W*.8,ky=H*.27,khw=Math.min(W*.1,120*k);
+  cliffs.push({pts:mk(-W*.06,W*.46,H*.38,14)});
+  cliffs.push({pts:mk(W*.52,W*1.06,H*.2,18,{x:kx,y:ky,hw:khw}),kx,ky,khw});
+  falls.push({x:W*.3,y0:H*.46,w:16*k},{x:W*.68,y0:H*.38,w:22*k},{x:W*.94,y0:H*.44,w:12*k});
+  const wall={x:kx,y:ky,hw:khw,h:22*k};keep.push(wall);
+  for(const [dx,tiers,th,w] of [[-.62,3,20,30],[-.2,4,24,36],[.3,5,26,40],[.72,3,22,32]])keep.push({x:kx+dx*khw,y:ky-wall.h+2*k,w:w*k,tiers,th:th*k,lean:(rnd()-.5)*.2,wall:WALLS[1],roof:ROOFS[2],win:Array.from({length:6},rnd),ph:rnd()*6});
+}
+function lotus(x,y,r,col,a){cx.fillStyle=css(col,a);for(let i=-2;i<=2;i++){const ang=-Math.PI/2+i*.5;cx.beginPath();cx.ellipse(x+Math.cos(ang)*r*.45,y+Math.sin(ang)*r*.45,r*.3,r*.62,ang+Math.PI/2,0,7);cx.fill();}cx.beginPath();cx.ellipse(x,y-r*.1,r*.26,r*.5,0,0,7);cx.fill();}
+function drawBlackmount(nt,c,T,dt,top,bot){const shade=(h,amt=1)=>css(mix(mix(hex(h),P.night,nt*.7*amt),P.slate,c*.2));const haze=c*.25+.1;
+  for(const cf of cliffs){cx.fillStyle=css(mix(hex('#15121f'),bot,haze+nt*.05));cx.beginPath();cx.moveTo(cf.pts[0][0],H);for(const [x,y] of cf.pts)cx.lineTo(x,y);cx.lineTo(cf.pts[cf.pts.length-1][0],H);cx.closePath();cx.fill();
+    cx.strokeStyle=css([140,135,165],.08+nt*.04);cx.lineWidth=1;for(let j=1;j<4;j++){cx.beginPath();for(const [x,y] of cf.pts)cx.lineTo(x+j*9*k,y+j*34*k+Math.sin(x*.02+j)*6*k);cx.stroke();}}
+  // keep: a long wall, violet slit windows, a great lotus banner, four towers
+  const w=keep[0];if(w){cx.fillStyle=shade('#221c30',.8);cx.fillRect(w.x-w.hw,w.y-w.h,w.hw*2,w.h);cx.fillStyle=shade('#2d2640',.8);for(let x=w.x-w.hw;x<w.x+w.hw;x+=10*k)cx.fillRect(x,w.y-w.h-4*k,6*k,4*k);
+    const on=nt>.25||c>.7;for(let x=w.x-w.hw+12*k;x<w.x+w.hw-8*k;x+=16*k){cx.fillStyle=on?css(P.ember,.7):'rgba(16,10,24,.8)';cx.fillRect(x,w.y-w.h*.7,2.5*k,w.h*.4);}
+    const bx=w.x,bw=w.hw*.42,bh=w.h*2.6,sw=Math.sin(T*1.3)*S.wind*4*k*(RM?0:1);cx.fillStyle=shade('#3a1f6a',.5);cx.beginPath();cx.moveTo(bx-bw/2,w.y-w.h);cx.lineTo(bx+bw/2,w.y-w.h);cx.lineTo(bx+bw/2+sw,w.y-w.h+bh*.82);cx.lineTo(bx+sw*.8,w.y-w.h+bh);cx.lineTo(bx-bw/2+sw,w.y-w.h+bh*.82);cx.closePath();cx.fill();lotus(bx+sw*.4,w.y-w.h+bh*.45,bw*.42,[200,180,235],.75);
+    for(let i=1;i<keep.length;i++)tower(keep[i],nt,c,T,false);}
+  // waterfalls: pale ribbons with moving streaks, mist at the foot
+  const fa=.34+nt*.1;for(const f of falls){const y1=H*.63+12*k,len=y1-f.y0;const g=cx.createLinearGradient(0,f.y0,0,y1);g.addColorStop(0,css([225,220,245],0));g.addColorStop(.15,css([225,220,245],fa));g.addColorStop(.85,css([225,220,245],fa*1.1));g.addColorStop(1,css([225,220,245],0));cx.fillStyle=g;cx.beginPath();cx.moveTo(f.x-f.w*.3,f.y0);cx.lineTo(f.x+f.w*.3,f.y0);cx.lineTo(f.x+f.w*.6,y1);cx.lineTo(f.x-f.w*.6,y1);cx.closePath();cx.fill();
+    const sp=RM?0:T*170*k;cx.fillStyle=css([245,242,255],fa*1.6);for(let i=0;i<9;i++){const t=((sp+i*len/9+i*17)%len)/len,yy=f.y0+t*len,xx=f.x+(Math.sin(i*2.3)*.5)*f.w*(.3+t*.5);cx.fillRect(xx-f.w*.06,yy,f.w*.12,14*k+t*16*k);}
+    const gr=cx.createRadialGradient(f.x,y1-6*k,0,f.x,y1-6*k,f.w*2.2);gr.addColorStop(0,css([225,220,245],fa*1.6));gr.addColorStop(1,css([225,220,245],0));cx.fillStyle=gr;cx.beginPath();cx.ellipse(f.x,y1-6*k,f.w*2.2,f.w*.9,0,0,7);cx.fill();}
+}
+function drawBlossoms(nt,c,T,dt){const col=mix([205,165,240],[110,70,165],nt*.7);
+  for(const t of trees){if(!t.bloom)continue;seed=t.seed+1;const cxp=t.x+(rnd()-.5)*10*k,cyp=t.y-t.h*.3,R=t.h*.26;
+    for(let i=0;i<26;i++){const a=rnd()*7,r=Math.sqrt(rnd())*R;cx.fillStyle=css(col,.55+rnd()*.4);cx.beginPath();cx.arc(cxp+Math.cos(a)*r*1.25,cyp+Math.sin(a)*r*.8,(1.6+rnd()*2)*k,0,7);cx.fill();}
+    if(!RM&&petals.length<34&&Math.random()<dt*(.4+S.wind))petals.push({x:cxp+(Math.random()-.5)*R*2,y:cyp+(Math.random()-.5)*R,vx:0,p:Math.random()*6,a:.9});}
+  petals=petals.filter(q=>{q.p+=dt*3;q.x+=(S.wind*40+Math.sin(q.p)*14)*dt;q.y+=(26+Math.cos(q.p*.7)*10)*dt;q.a-=dt*.16;if(q.a<=0||q.y>H*.98)return false;cx.fillStyle=css(col,q.a);cx.beginPath();cx.ellipse(q.x,q.y,2.6*k,1.4*k,q.p,0,7);cx.fill();return true;});}
 const hillY=(x,base,amp,f,ph)=>base+Math.sin(x*f+ph)*amp+Math.sin(x*f*2.3+ph*1.7)*amp*.4;
 function hill(base,amp,f,ph,col){cx.fillStyle=col;cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W+10;x+=10)cx.lineTo(x,hillY(x,base,amp,f,ph));cx.lineTo(W,H);cx.fill();}
 // upswept eave: tips curl upward, apex flat
@@ -537,6 +583,7 @@ function tower(o,nt,c,T,hang){let X=o.x,y=o.y,w=o.w,lit=0;const wc=css(mix(mix(o
       if(on){cx.fillStyle=css(P.jade,.16);cx.beginPath();cx.arc(wx+ww/2,wy+wh/2,ww*2.4,0,7);cx.fill();lit++;}
       cx.fillStyle=on?css(P.jade):'rgba(20,14,30,.75)';cx.beginPath();cx.moveTo(wx,wy+wh);cx.lineTo(wx,wy+ww*.5);cx.quadraticCurveTo(wx+ww/2,wy-ww*.4,wx+ww,wy+ww*.5);cx.lineTo(wx+ww,wy+wh);cx.fill();}
     X+=dx;y-=th;const hw=tw*.82,rh=th*.42;eave(X,y,hw,rh,rc);
+    if(hang&&i===0&&o.banner){const bw=tw*.2,bh=th*1.15,bx=X+dx*.5,sw=Math.sin(T*1.4+o.ph)*S.wind*3*k*(RM?0:1);cx.fillStyle=css(mix(hex('#3a1f6a'),P.night,nt*.5));cx.beginPath();cx.moveTo(bx-bw/2,y-rh*.5);cx.lineTo(bx+bw/2,y-rh*.5);cx.lineTo(bx+bw/2+sw,y-rh*.5+bh*.85);cx.lineTo(bx+sw,y-rh*.5+bh);cx.lineTo(bx-bw/2+sw,y-rh*.5+bh*.85);cx.closePath();cx.fill();lotus(bx+sw*.5,y-rh*.5+bh*.45,bw*.42,[205,190,235],.8);}
     if(hang&&i===0){for(const s of[-1,1]){const sw=Math.sin(T*1.6+o.ph+s)*S.wind*3*k*(RM?0:1),lx=X+s*hw*.92+sw,ly=y-rh*.5+16*k;
       cx.strokeStyle='rgba(20,12,30,.9)';cx.lineWidth=1;cx.beginPath();cx.moveTo(X+s*hw*.95,y-rh*.55);cx.lineTo(lx,ly-6*k);cx.stroke();
       const glow=.35+nt*.65;const gr=cx.createRadialGradient(lx,ly,0,lx,ly,22*k);gr.addColorStop(0,css(P.ember,.4*glow));gr.addColorStop(1,css(P.ember,0));cx.fillStyle=gr;cx.beginPath();cx.arc(lx,ly,22*k,0,7);cx.fill();
@@ -565,7 +612,7 @@ function frame(now){
   const sd=mix(P.stormNight,P.stormTop,day),sb=mix(P.stormNight,P.stormBot,day*.9);
   let top=mix(mix(P.nightTop,P.dayTop,day),P.duskTop,dusk*.6),bot=mix(mix(P.nightBot,P.dayBot,day),P.duskBot,dusk*.75);
   top=mix(top,sd,c*.8);bot=mix(bot,sb,c*.75);
-  if(S.flash>0){top=mix(top,[210,220,255],S.flash*.7);bot=mix(bot,[220,225,255],S.flash*.6);}
+  if(S.flash>0){top=mix(top,[190,160,255],S.flash*.7);bot=mix(bot,[215,195,255],S.flash*.6);}
   const g=cx.createLinearGradient(0,0,0,H*.78);g.addColorStop(0,css(top));g.addColorStop(1,css(bot));cx.fillStyle=g;cx.fillRect(0,0,W,H);
   const sa=nt*(1-c);if(sa>.02)for(const s of stars){cx.fillStyle=`rgba(240,230,255,${sa*(.5+.5*Math.sin(T*2+s.p))})`;cx.fillRect(s.x,s.y,s.r,s.r);}
   // sun & a large pale moon
@@ -582,6 +629,7 @@ function frame(now){
   const shade=(h,amt=1)=>css(mix(mix(hex(h),P.night,nt*.7*amt),P.slate,c*.2));
   // far ridge with jagged peaks
   cx.fillStyle=css(mix(bot,top,.35));cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W+20;x+=20)cx.lineTo(x,H*.5+Math.sin(x*.011)*16*k+Math.abs(Math.sin(x*.023))*-34*k);cx.lineTo(W,H);cx.fill();
+  drawBlackmount(nt,c,T,dt,top,bot);
   hill(H*.6,16*k,.005,1,shade('#4a4658',.9));
   // back village (smaller, hazier)
   hill(H*.66,12*k,.006,3,shade('#302c3c'));
@@ -600,7 +648,7 @@ function frame(now){
   // twisted trees behind front towers
   cx.strokeStyle=shade('#09080d',.5);cx.lineCap='round';
   for(const t of trees){const sw=Math.sin(T*1.1+t.ph)*S.wind*.05*(RM?0:1);seed=t.seed;branch(t.x,t.y,t.h*.38,-Math.PI/2+(rnd()-.5)*.3,6,sw);}
-  seed=Math.floor(T*1000)%2147483646+1;
+  drawBlossoms(nt,c,T,dt);seed=Math.floor(T*1000)%2147483646+1;
   drawSquare(nt,c,T,dt,top,bot);drawYuki(nt,c,T);
   // front towers
   for(const o of towers){cx.fillStyle='rgba(0,0,0,.25)';cx.beginPath();cx.ellipse(o.x+8*k,o.y+2*k,o.w*.7,6*k,0,0,7);cx.fill();lit+=tower(o,nt,c,T,true);}
@@ -622,11 +670,11 @@ function frame(now){
   // vignette for the moody edges
   const vg=cx.createRadialGradient(W/2,H*.55,Math.min(W,H)*.35,W/2,H*.55,Math.max(W,H)*.75);vg.addColorStop(0,'rgba(4,3,8,0)');vg.addColorStop(1,`rgba(4,3,8,${.35+nt*.2})`);cx.fillStyle=vg;cx.fillRect(0,0,W,H);
   if(S.target>.85&&S.rain>.7&&!RM&&Math.random()<dt*.18){S.flash=1;let x=W*(.15+Math.random()*.7),y=0;S.bolt=[[x,y]];while(y<H*.55){y+=20+Math.random()*30;x+=(Math.random()-.5)*50;S.bolt.push([x,y]);}thunder();}
-  if(S.flash>0){if(S.bolt&&S.flash>.6){cx.strokeStyle=`rgba(230,220,255,${S.flash})`;cx.lineWidth=2.5;cx.beginPath();S.bolt.forEach(([x,y],i)=>i?cx.lineTo(x,y):cx.moveTo(x,y));cx.stroke();}
-    cx.fillStyle=`rgba(220,230,255,${S.flash*.22})`;cx.fillRect(0,0,W,H);S.flash=Math.max(0,S.flash-dt*2.2);}
+  if(S.flash>0){if(S.bolt&&S.flash>.6){cx.strokeStyle=`rgba(180,130,255,${S.flash*.6})`;cx.lineWidth=9;cx.beginPath();S.bolt.forEach(([x,y],i)=>i?cx.lineTo(x,y):cx.moveTo(x,y));cx.stroke();cx.strokeStyle=`rgba(240,230,255,${S.flash})`;cx.lineWidth=2.5;cx.stroke();}
+    cx.fillStyle=`rgba(200,170,255,${S.flash*.22})`;cx.fillRect(0,0,W,H);S.flash=Math.max(0,S.flash-dt*2.2);}
   if(!frame.s||T-frame.s>.5){frame.s=T;const mins=Math.floor(S.t*1440),hr=Math.floor(mins/60),mi=Math.floor(mins%60/10)*10;
     clockEl.textContent=`${(hr%12)||12}:${String(mi).padStart(2,'0')} ${hr<12?'am':'pm'}`;
-    wxEl.textContent=S.rain>.75?'Thunderstorm':S.rain>.45?'Steady rain':S.rain>.08?'Light rain':c>.4?'Clouds gathering':S.wet>.15?'Drying out':'Clear skies';
+    wxEl.textContent=S.rain>.75?'Violet thunderstorm':S.rain>.45?'Steady rain':S.rain>.08?'Light rain':c>.4?'Clouds gathering':S.wet>.15?'Drying out':'Clear skies';
     litEl.textContent=lit;}
   setRainVol(S.rain);requestAnimationFrame(frame);
 }
@@ -679,6 +727,15 @@ ytMin.addEventListener('click',()=>{const m=yt.classList.toggle('min');ytMin.set
 document.getElementById('ytForm').addEventListener('submit',e=>{e.preventDefault();const r=parseYT(document.getElementById('ytUrl').value);
   if(!r){ytMsg.textContent='That doesn’t look like a YouTube link. Try copying it from the address bar.';return;}
   ytCur={...r,title:'YouTube music'};ytTitle.textContent=r.list&&!r.v?'YouTube playlist':'Now playing';ytMsg.textContent='If it won’t play, the video’s owner has turned off embedding.';ytPlay();});
+// Yuki Tao Hu's theme: plays while her fortune scroll is open, then the village track comes back
+const YUKI_YT={v:'B5ENJ7SLLWk',title:'Yuki Tao Hu’s theme'};let ytBefore=null;
+function yukiTheme(force){if(ytBefore){if(force)ytPlay();return;}const playing=!!ytVid.querySelector('iframe');if(!playing&&!force)return;
+  ytBefore={cur:ytCur,playing,open:!yt.hidden,title:ytTitle.textContent,msg:ytMsg.textContent};ytCur=YUKI_YT;ytTitle.textContent=YUKI_YT.title;ytMsg.textContent='Her song. The village track returns when the scroll closes.';
+  if(yt.hidden){yt.hidden=false;ytb.setAttribute('aria-expanded',true);}ytPlay();}
+function yukiThemeEnd(){if(!ytBefore)return;const b=ytBefore;ytBefore=null;ytCur=b.cur;ytTitle.textContent=b.title;ytMsg.textContent=b.msg;
+  if(b.playing)ytPlay();else{ytVid.innerHTML='';if(b.open)ytPoster();else{yt.hidden=true;ytb.setAttribute('aria-expanded',false);}}}
+document.getElementById('fplay').addEventListener('click',()=>yukiTheme(true));
+new MutationObserver(()=>{if(fov.hidden)yukiThemeEnd();else yukiTheme(false);}).observe(fov,{attributes:true,attributeFilter:['hidden']});
 
 // the person's own music file, played locally in their browser only
 document.getElementById('trk').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;if(ytVid.querySelector('iframe'))ytPoster();own.src=URL.createObjectURL(f);own.volume=.7;own.play().catch(()=>{});if(musOn)musBtn.click();e.target.parentNode.childNodes[0].textContent=f.name.replace(/\.[^.]+$/,'').slice(0,24);});
